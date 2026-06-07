@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="no-js theme-auto center-alignment-no" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SearXNG — Accueil (maquette thème Google)</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="mock.css">
+</head>
+<body class="index_endpoint">
+  <main id="main_index">
+    <!-- top-right nav (#links_on_top) -->
+    <nav id="links_on_top">
+      <a href="#" class="link_on_top_about">À propos</a>
+      <a href="#" class="link_on_top_preferences">Préférences</a>
+      <span class="apps-grid" title="Applications" aria-label="Applications">
+        <svg class="icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+          <circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/>
+          <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+          <circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
+        </svg>
+      </span>
+      <a href="#" class="signin">Connexion</a>
+    </nav>
+
+    <div class="index">
+      <div class="title">
+        <h1>
+          <span class="wordmark" aria-label="SearXNG">
+            <span class="c1">S</span><span class="c2">e</span><span class="c3">a</span><span class="c4">r</span><span class="x">X</span><span class="c5">N</span><span class="c6">G</span>
+          </span>
+        </h1>
+      </div>
+
+      <!-- simple_search.html structure -->
+      <form id="search" method="GET" action="results.html" role="search">
+        <div id="search_header">
+          <div id="search_view">
+            <div class="search_box">
+              <span class="leading-icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </span>
+              <input id="q" name="q" type="text" placeholder="Rechercher ou saisir une adresse" autocomplete="off" autofocus value="">
+              <button id="clear_search" type="reset" aria-label="effacer"></button>
+              <div class="trailing">
+                <button type="button" class="icon-btn mic" aria-label="Recherche vocale" title="Recherche vocale">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
+                </button>
+                <button type="button" class="icon-btn lens" aria-label="Recherche par image" title="Recherche par image">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M3 9V5a2 2 0 0 1 2-2h4M21 9V5a2 2 0 0 0-2-2h-4M3 15v4a2 2 0 0 0 2 2h4M21 15v4a2 2 0 0 1-2 2h-4"/></svg>
+                </button>
+                <button id="send_search" type="submit" class="icon-btn" aria-label="rechercher" style="display:none"></button>
+              </div>
+            </div>
+            <div class="autocomplete hide_if_nojs"><ul></ul></div>
+          </div>
+        </div>
+        <div class="index-buttons">
+          <button type="submit" class="g-btn">Recherche SearXNG</button>
+          <button type="submit" class="g-btn" name="lucky" value="1">J'ai de la chance</button>
+        </div>
+      </form>
+    </div>
+
+    <footer>
+      <div class="footer-row region">France</div>
+      <div class="footer-row">
+        <nav>
+          <a href="#">À propos</a>
+          <a href="#">Code source</a>
+          <a href="#">Statistiques</a>
+        </nav>
+        <nav>
+          <a href="#">Confidentialité</a>
+          <a href="#">Préférences</a>
+        </nav>
+      </div>
+    </footer>
+  </main>
+
+  <!-- mockup-only theme switcher -->
+  <div class="mock-theme-switch" aria-label="Aperçu du thème (maquette)">
+    <button data-theme-btn="light">Clair</button>
+    <button data-theme-btn="dark">Sombre</button>
+    <button data-theme-btn="auto">Auto</button>
+  </div>
+  <script src="demo.js"></script>
+</body>
+</html>

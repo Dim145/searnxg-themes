@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="no-js theme-auto center-alignment-no" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>intelligence artificielle — Images — SearXNG (maquette)</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="mock.css">
+</head>
+<body class="results_endpoint">
+  <main id="main_results">
+    <nav id="links_on_top">
+      <a href="#" class="link_on_top_about">À propos</a>
+      <a href="preferences.html" class="link_on_top_preferences">Préférences</a>
+      <a href="#" class="signin">Connexion</a>
+    </nav>
+
+    <form id="search" method="GET" action="results.html" role="search">
+      <div id="search_header">
+        <a id="search_logo" href="index.html" title="Page d'accueil">
+          <span hidden>SearXNG</span>
+          <span class="wordmark" aria-label="SearXNG">
+            <span class="c1">S</span><span class="c2">e</span><span class="c3">a</span><span class="c4">r</span><span class="x">X</span><span class="c5">N</span><span class="c6">G</span>
+          </span>
+        </a>
+        <div id="search_view">
+          <div class="search_box">
+            <span class="leading-icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input id="q" name="q" type="text" autocomplete="off" value="intelligence artificielle">
+            <div class="trailing">
+              <button type="reset" id="clear_search" class="icon-btn" aria-label="effacer">
+                <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+              <button type="button" class="icon-btn mic" aria-label="Recherche vocale">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
+              </button>
+              <button type="button" class="icon-btn lens" aria-label="Recherche par image">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M3 9V5a2 2 0 0 1 2-2h4M21 9V5a2 2 0 0 0-2-2h-4M3 15v4a2 2 0 0 0 2 2h4M21 15v4a2 2 0 0 1-2 2h-4"/></svg>
+              </button>
+              <span class="divider"></span>
+              <button type="submit" id="send_search" class="icon-btn" aria-label="rechercher" style="color:var(--g-accent)">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="autocomplete hide_if_nojs"><ul></ul></div>
+        </div>
+
+        <div id="categories" class="search_categories">
+          <div id="categories_container">
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_general" name="category_general">
+              <label for="checkbox_general" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <div class="category_name">Tout</div>
+              </label>
+            </div>
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_images" name="category_images" checked>
+              <label for="checkbox_images" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <div class="category_name">Images</div>
+              </label>
+            </div>
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_videos" name="category_videos">
+              <label for="checkbox_videos" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                <div class="category_name">Vidéos</div>
+              </label>
+            </div>
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_news" name="category_news">
+              <label for="checkbox_news" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9h4"/><line x1="18" y1="14" x2="10" y2="14"/><line x1="15" y1="18" x2="10" y2="18"/></svg>
+                <div class="category_name">Actualités</div>
+              </label>
+            </div>
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_map" name="category_map">
+              <label for="checkbox_map" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div class="category_name">Cartes</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="search_filters">
+        <select aria-label="Taille"><option>Toutes tailles</option><option>Grande</option><option>Moyenne</option></select>
+        <select aria-label="Couleur"><option>Toutes couleurs</option><option>Noir et blanc</option><option>Transparent</option></select>
+        <select aria-label="Type"><option>Tout type</option><option>Photo</option><option>Clipart</option><option>Dessin</option></select>
+        <select class="time_range" aria-label="Période"><option selected>À tout moment</option><option>Dernière semaine</option></select>
+      </div>
+      <input type="hidden" name="theme" value="google">
+    </form>
+
+    <!-- results.html with only_template_images -->
+    <div id="results" class="only_template_images">
+      <div id="urls" role="main">
+        <!-- one fully-faithful tile incl. hidden .detail lightbox (rest omit .detail for brevity) -->
+        <article class="result result-images category-images">
+          <a href="#" rel="noreferrer">
+            <img class="image_thumbnail" src="https://picsum.photos/seed/ai1/300/180" alt="Réseau de neurones" loading="lazy" width="300" height="180">
+            <span class="image_resolution">1920×1080</span>
+            <span class="title">Réseau de neurones artificiels — schéma</span>
+            <span class="source">fr.wikipedia.org</span>
+          </a>
+          <div class="detail swipe-horizontal" hidden>
+            <a class="result-detail-close" href="#">×</a>
+            <div class="result-images-labels"><h4>Réseau de neurones artificiels</h4></div>
+          </div>
+        </article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai2/240/180" alt="Robot IA" width="240" height="180"><span class="title">Robotique et IA embarquée</span><span class="source">www.inria.fr</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai3/270/180" alt="Data center" width="270" height="180"><span class="title">Centre de données pour l'entraînement</span><span class="source">www.lemonde.fr</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai4/200/180" alt="Circuit" width="200" height="180"><span class="title">Puce dédiée à l'apprentissage</span><span class="source">www.cnrs.fr</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai5/320/180" alt="Graphe" width="320" height="180"><span class="title">Visualisation d'un modèle de langage</span><span class="source">arxiv.org</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai6/260/180" alt="Vision" width="260" height="180"><span class="title">Vision par ordinateur en temps réel</span><span class="source">openai.com</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai7/220/180" alt="Code" width="220" height="180"><span class="title">Génération de code assistée</span><span class="source">github.blog</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai8/300/180" alt="Cerveau" width="300" height="180"><span class="title">Analogie cerveau et réseaux profonds</span><span class="source">www.pasteur.fr</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai9/250/180" alt="Données" width="250" height="180"><span class="title">Jeux de données d'entraînement</span><span class="source">huggingface.co</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai10/290/180" alt="Chatbot" width="290" height="180"><span class="title">Agent conversationnel</span><span class="source">www.numerama.com</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai11/230/180" alt="Maths" width="230" height="180"><span class="title">Fondements mathématiques de l'IA</span><span class="source">www.larousse.fr</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai12/310/180" alt="Voiture" width="310" height="180"><span class="title">Conduite autonome et perception</span><span class="source">www.usine-digitale.fr</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai13/210/180" alt="Santé" width="210" height="180"><span class="title">IA en imagerie médicale</span><span class="source">www.inserm.fr</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai14/280/180" alt="Éthique" width="280" height="180"><span class="title">Éthique et régulation de l'IA</span><span class="source">www.cnil.fr</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai15/260/180" alt="Histoire" width="260" height="180"><span class="title">Histoire de l'intelligence artificielle</span><span class="source">fr.wikipedia.org</span></a></article>
+        <article class="result result-images category-images"><a href="#"><img class="image_thumbnail" src="https://picsum.photos/seed/ai16/240/180" alt="Algo" width="240" height="180"><span class="title">Algorithmes d'apprentissage</span><span class="source">www.coursera.org</span></a></article>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-row region">France · Recherche respectueuse de la vie privée</div>
+      <div class="footer-row">
+        <nav><a href="#">À propos</a><a href="#">Code source</a></nav>
+        <nav><a href="#">Confidentialité</a><a href="preferences.html">Préférences</a></nav>
+      </div>
+    </footer>
+  </main>
+
+  <div class="mock-theme-switch">
+    <button data-theme-btn="light">Clair</button>
+    <button data-theme-btn="dark">Sombre</button>
+    <button data-theme-btn="auto">Auto</button>
+  </div>
+  <script src="demo.js"></script>
+</body>
+</html>

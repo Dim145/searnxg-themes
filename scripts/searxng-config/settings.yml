@@ -1,0 +1,21 @@
+# Local test settings for previewing the "google" theme.
+# NOT for production — the secret_key is a throwaway and the limiter is off.
+use_default_settings: true
+
+server:
+  secret_key: "searnxg-themes-local-test-only-change-me-0123456789"
+  limiter: false
+  public_instance: false
+  image_proxy: true
+
+ui:
+  default_theme: google
+  infinite_scroll: true
+  search_on_category_select: false
+
+search:
+  autocomplete: "duckduckgo"
+  autocomplete_min: 2
+  formats:
+    - html
+    - json

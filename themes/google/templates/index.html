@@ -1,0 +1,16 @@
+{% extends "google/base.html" %}
+{% from 'google/icons.html' import icon_big %}
+{% block content %}
+<div class="index">
+    {# Google-style multicolour wordmark (own mark, not Google's logo).
+       Letters are fixed to "SearXNG"; rename here if your instance is renamed. #}
+    <div class="title">
+        <h1>
+            <span class="wordmark" aria-label="{{ instance_name or 'SearXNG' }}">
+                <span class="c1">S</span><span class="c2">e</span><span class="c3">a</span><span class="c4">r</span><span class="x">X</span><span class="c5">N</span><span class="c6">G</span>
+            </span>
+        </h1>
+    </div>
+    {% include 'google/simple_search.html' %}
+</div>
+{% endblock %}

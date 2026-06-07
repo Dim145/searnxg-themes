@@ -1,0 +1,574 @@
+/* =====================================================================
+   SearXNG · "google" theme  —  design mockup stylesheet
+   ---------------------------------------------------------------------
+   This file is the single source of truth for the visual design. It is
+   authored so it ports ~1:1 into the SearXNG theme:
+     · the :root / html.theme-* token blocks  ->  client/google/src/less/definitions.less
+     · the structural sections                ->  style.less / search.less / result_templates.less
+   The HTML in the .html mockups mirrors SearXNG's REAL rendered DOM
+   (article.result, a.url_header, #results grid, #search_header, …) so
+   these selectors map straight onto the server-rendered markup.
+
+   Fidelity target: Google Search (2024–2026), light + dark.
+   No Google trademarked assets: own multicolour wordmark, Arial body
+   (what Google actually renders), Poppins for the display/wordmark,
+   inline open-source-style SVG icons.
+   ===================================================================== */
+
+/* In the real theme this font is SELF-HOSTED (privacy: never fetch from
+   fonts.google.com on a SearXNG instance). CDN here only for the mockup. */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* =====================================================================
+   1. DESIGN TOKENS  (-> definitions.less)
+   ===================================================================== */
+:root {
+  /* ---- type ---- */
+  --g-font-body: arial, "Helvetica Neue", helvetica, sans-serif;
+  --g-font-display: "Poppins", "Product Sans", arial, sans-serif;
+
+  /* ---- LIGHT palette ---- */
+  --g-bg: #ffffff;
+  --g-bg-elevated: #ffffff;
+  --g-surface: #f8f9fa;          /* buttons / chips / favicon well */
+  --g-surface-2: #f1f3f4;        /* hover wells */
+  --g-text: #1f1f1f;             /* titles fallback, snippet body, site name */
+  --g-text-secondary: #4d5156;   /* URL / breadcrumb / meta */
+  --g-text-tertiary: #5f6368;    /* muted labels, icons */
+  --g-link: #1a0dab;             /* result H3 title link (classic, still live) */
+  --g-link-visited: #681da8;
+  --g-url: #4d5156;
+  --g-url-sitename: #1f1f1f;
+  --g-border: #dadce0;           /* dividers, header search border */
+  --g-border-home: #dfe1e5;      /* homepage search box border */
+  --g-accent: #1a73e8;           /* action blue: buttons, focus, snippet links */
+  --g-accent-hover: #1b66c9;
+  --g-tab-active: #1f1f1f;        /* current Google: dark-grey active tab + underline */
+  --g-tab-inactive: #5f6368;
+  --g-btn-bg: #f8f9fa;
+  --g-btn-text: #3c4043;
+  --g-btn-border: #f8f9fa;
+  --g-btn-border-hover: #dadce0;
+  --g-footer-bg: #f2f2f2;
+  --g-footer-text: #70757a;
+  --g-shadow-search: 0 1px 6px rgba(32, 33, 36, .28);
+  --g-shadow-search-rest: 0 1px 6px rgba(32, 33, 36, .12);
+  --g-shadow-card: 0 1px 3px rgba(32, 33, 36, .12), 0 1px 2px rgba(32, 33, 36, .08);
+  --g-focus-ring: rgba(26, 115, 232, .35);
+
+  /* ---- brand (logo) hues — generic primaries, not Google's logo ---- */
+  --g-brand-blue: #4285f4;
+  --g-brand-red: #ea4335;
+  --g-brand-yellow: #fbbc05;
+  --g-brand-green: #34a853;
+
+  /* ---- geometry (px here for fidelity; rem-mapped when ported) ---- */
+  --g-results-width: 652px;
+  --g-results-offset: 170px;
+  --g-sidebar-width: 372px;
+  --g-search-width: 584px;        /* home */
+  --g-search-width-header: 692px; /* results header */
+  --g-radius-pill: 24px;
+  --g-radius-card: 12px;
+  --g-radius-btn: 8px;
+}
+
+/* ---- DARK palette ---- */
+html.theme-dark {
+  --g-bg: #1f1f1f;
+  --g-bg-elevated: #2d2e30;
+  --g-surface: #303134;
+  --g-surface-2: #28292a;
+  --g-text: #e8e8e8;
+  --g-text-secondary: #bdc1c6;
+  --g-text-tertiary: #9aa0a6;
+  --g-link: #99c3ff;
+  --g-link-visited: #c58af9;
+  --g-url: #bdc1c6;
+  --g-url-sitename: #e8e8e8;
+  --g-border: #3c4043;
+  --g-border-home: #5f6368;
+  --g-accent: #8ab4f8;
+  --g-accent-hover: #a8c7fa;
+  --g-tab-active: #e8e8e8;
+  --g-tab-inactive: #9aa0a6;
+  --g-btn-bg: #303134;
+  --g-btn-text: #e8eaed;
+  --g-btn-border: #303134;
+  --g-btn-border-hover: #5f6368;
+  --g-footer-bg: #1f1f1f;
+  --g-footer-text: #bdc1c6;
+  --g-search-bg: #4d5156;        /* dark resting search pill */
+  --g-search-bg-focus: #303134;
+  --g-shadow-search: rgba(0, 0, 0, .55) 0 4px 12px;
+  --g-shadow-search-rest: rgba(0, 0, 0, .25) 0 1px 4px;
+  --g-shadow-card: rgba(0, 0, 0, .35) 0 1px 3px;
+  --g-focus-ring: rgba(138, 180, 248, .45);
+}
+
+/* auto = follow OS, mirrors SearXNG's theme-auto mechanism */
+@media (prefers-color-scheme: dark) {
+  html.theme-auto {
+    --g-bg: #1f1f1f; --g-bg-elevated: #2d2e30; --g-surface: #303134; --g-surface-2: #28292a;
+    --g-text: #e8e8e8; --g-text-secondary: #bdc1c6; --g-text-tertiary: #9aa0a6;
+    --g-link: #99c3ff; --g-link-visited: #c58af9; --g-url: #bdc1c6; --g-url-sitename: #e8e8e8;
+    --g-border: #3c4043; --g-border-home: #5f6368; --g-accent: #8ab4f8; --g-accent-hover: #a8c7fa;
+    --g-tab-active: #e8e8e8; --g-tab-inactive: #9aa0a6;
+    --g-btn-bg: #303134; --g-btn-text: #e8eaed; --g-btn-border: #303134; --g-btn-border-hover: #5f6368;
+    --g-footer-bg: #1f1f1f; --g-footer-text: #bdc1c6;
+    --g-search-bg: #4d5156; --g-search-bg-focus: #303134;
+    --g-shadow-search: rgba(0, 0, 0, .55) 0 4px 12px;
+    --g-shadow-card: rgba(0, 0, 0, .35) 0 1px 3px;
+    --g-focus-ring: rgba(138, 180, 248, .45);
+  }
+}
+
+/* =====================================================================
+   2. BASE  (-> style.less)
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { font-size: 16px; }
+
+body {
+  margin: 0;
+  background: var(--g-bg);
+  color: var(--g-text);
+  font-family: var(--g-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: var(--g-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button { font-family: inherit; cursor: pointer; }
+
+::selection { background: rgba(26, 115, 232, .18); }
+
+svg.icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* ---- top-right nav (#links_on_top) ---- */
+#links_on_top {
+  position: absolute; top: 0; right: 0;
+  display: flex; align-items: center; gap: 22px;
+  padding: 16px 26px; font-size: 13px; z-index: 30;
+}
+#links_on_top a { color: var(--g-text); display: inline-flex; align-items: center; gap: 6px; }
+#links_on_top a:hover { text-decoration: underline; }
+#links_on_top .apps-grid { color: var(--g-text-tertiary); }
+#links_on_top .signin {
+  background: var(--g-accent); color: #fff; padding: 9px 22px; border-radius: 4px;
+  font-weight: 500; font-family: var(--g-font-display);
+}
+html.theme-dark #links_on_top .signin { color: #062e6f; background: #a8c7fa; }
+#links_on_top .signin:hover { text-decoration: none; box-shadow: var(--g-shadow-card); }
+
+/* =====================================================================
+   3. WORDMARK  (our own multicolour mark — NOT Google's logo)
+   ===================================================================== */
+.wordmark { font-family: var(--g-font-display); font-weight: 600; letter-spacing: -.5px;
+  line-height: 1; user-select: none; white-space: nowrap; }
+.wordmark .c1 { color: var(--g-brand-blue); }
+.wordmark .c2 { color: var(--g-brand-red); }
+.wordmark .c3 { color: var(--g-brand-yellow); }
+.wordmark .c4 { color: var(--g-brand-blue); }
+.wordmark .c5 { color: var(--g-brand-green); }
+.wordmark .c6 { color: var(--g-brand-red); }
+.wordmark .x  { color: var(--g-text-tertiary); font-weight: 700; }
+
+/* =====================================================================
+   4. HOME PAGE  (#main_index)  (-> index.less)
+   ===================================================================== */
+#main_index {
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  justify-content: flex-start; padding-top: 22vh;
+}
+#main_index .index { display: flex; flex-direction: column; align-items: center; width: 100%; }
+#main_index .title { margin-bottom: 26px; }
+#main_index .title .wordmark { font-size: 88px; }
+#main_index .title h1 { margin: 0; }
+
+#main_index #search { width: 100%; display: flex; flex-direction: column; align-items: center; }
+#main_index #search_header { width: 100%; display: flex; justify-content: center; }
+#main_index #search_view { width: 100%; max-width: var(--g-search-width); }
+
+#main_index .index-buttons { display: flex; gap: 11px; margin-top: 30px; }
+.g-btn {
+  height: 38px; padding: 0 18px; border-radius: var(--g-radius-btn);
+  font: 500 14px/38px var(--g-font-display);
+  background: var(--g-btn-bg); color: var(--g-btn-text);
+  border: 1px solid var(--g-btn-border); transition: box-shadow .15s, border-color .15s;
+}
+.g-btn:hover { border-color: var(--g-btn-border-hover); box-shadow: 0 1px 1px rgba(0, 0, 0, .1); text-decoration: none; }
+
+#main_index .index-categories { margin-top: 34px; }
+
+/* =====================================================================
+   5. SEARCH BOX  (.search_box)  (-> search.less)
+   ===================================================================== */
+.search_box {
+  position: relative; display: flex; align-items: center;
+  width: 100%; height: 46px; padding: 0 8px 0 14px;
+  background: var(--g-bg); border: 1px solid var(--g-border-home);
+  border-radius: var(--g-radius-pill);
+  transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
+}
+.search_box:hover,
+.search_box:focus-within { border-color: transparent; box-shadow: var(--g-shadow-search); }
+
+html.theme-dark .search_box,
+html.theme-auto .search_box { /* dark resting pill is filled, not outlined */ }
+@media (prefers-color-scheme: dark) {
+  html.theme-auto .search_box { background: var(--g-search-bg); border-color: transparent; }
+  html.theme-auto .search_box:hover,
+  html.theme-auto .search_box:focus-within { background: var(--g-search-bg-focus); }
+}
+html.theme-dark .search_box { background: var(--g-search-bg); border-color: transparent; }
+html.theme-dark .search_box:hover,
+html.theme-dark .search_box:focus-within { background: var(--g-search-bg-focus); }
+
+.search_box .leading-icon { color: var(--g-text-tertiary); flex: 0 0 auto; margin-right: 12px; display: flex; }
+.search_box input#q {
+  flex: 1 1 auto; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent;
+  font-family: var(--g-font-body); font-size: 16px; color: var(--g-text);
+}
+.search_box input#q::placeholder { color: var(--g-text-tertiary); }
+
+.search_box .trailing { display: flex; align-items: center; gap: 2px; flex: 0 0 auto; }
+.search_box .icon-btn {
+  width: 40px; height: 40px; border: 0; background: transparent; border-radius: 50%;
+  display: grid; place-items: center; color: var(--g-text-tertiary);
+}
+.search_box .icon-btn:hover { background: var(--g-surface-2); color: var(--g-text-secondary); }
+.search_box .icon-btn.lens { color: var(--g-brand-blue); }
+.search_box .icon-btn.mic .dot1 { color: var(--g-brand-red); }
+.search_box #clear_search { display: none; }
+.search_box .divider { width: 1px; height: 24px; background: var(--g-border); margin: 0 6px; }
+
+/* =====================================================================
+   6. RESULTS PAGE HEADER  (#main_results #search_header)
+   ===================================================================== */
+#main_results { padding-bottom: 60px; }
+
+#search_header {
+  position: sticky; top: 0; z-index: 20;
+  display: grid; grid-template-columns: auto 1fr; align-items: center;
+  gap: 24px; padding: 18px 0 0 28px;
+  background: var(--g-bg);
+}
+#search_header::after { /* hairline under the whole header zone */
+  content: ""; }
+
+#main_results #search { display: contents; }
+
+#search_logo { display: inline-flex; align-items: center; height: 40px; }
+#search_logo .wordmark { font-size: 26px; }
+#search_logo span[hidden] { display: none; }
+
+#main_results #search_view { max-width: var(--g-search-width-header); width: 100%; }
+#main_results .search_box {
+  height: 48px; border-color: var(--g-border);
+  box-shadow: var(--g-shadow-search-rest);
+}
+html.theme-dark #main_results .search_box { box-shadow: none; }
+
+/* the categories + filters live in a second row aligned to the column */
+#search_header #categories { grid-column: 1 / -1; }
+
+/* =====================================================================
+   7. CATEGORY TABS  (#categories)  (-> search.less)
+   ===================================================================== */
+#categories {
+  margin-top: 16px;
+  border-bottom: 1px solid var(--g-border);
+  padding-left: calc(var(--g-results-offset) - 28px);
+}
+#categories_container { display: flex; gap: 4px; }
+.category { position: relative; }
+.category input[type="checkbox"] { position: absolute; opacity: 0; pointer-events: none; }
+.category label, .category.category_button {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 14px 14px; height: 46px; cursor: pointer;
+  font-size: 14px; color: var(--g-tab-inactive);
+  border: 0; background: transparent; border-bottom: 3px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+.category label .icon { width: 18px; height: 18px; }
+.category label:hover { color: var(--g-text); }
+.category input[type="checkbox"]:checked + label,
+.category.category_button.selected {
+  color: var(--g-tab-active); border-bottom-color: var(--g-tab-active); font-weight: 500;
+}
+.category .help { display: none; }
+
+/* ---- filters (.search_filters) ---- */
+.search_filters {
+  display: flex; gap: 10px; align-items: center;
+  padding: 14px 0 0 var(--g-results-offset);
+}
+.search_filters select {
+  appearance: none; font-family: var(--g-font-body); font-size: 13px;
+  color: var(--g-text-secondary); background: var(--g-surface);
+  border: 1px solid var(--g-border); border-radius: 18px;
+  height: 34px; padding: 0 32px 0 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+}
+.search_filters select:hover { background-color: var(--g-surface-2); }
+
+/* =====================================================================
+   8. RESULTS GRID  (#results)  (-> style.less)
+   keeps SearXNG's named grid: corrections / answers / urls / sidebar / pagination
+   ===================================================================== */
+#results {
+  margin-top: 18px;
+  padding-left: var(--g-results-offset);
+  display: grid;
+  grid-template:
+    "corrections sidebar" min-content
+    "answers     sidebar" min-content
+    "urls        sidebar" 1fr
+    "pagination  sidebar" min-content
+    / var(--g-results-width) var(--g-sidebar-width);
+  column-gap: 56px;
+}
+#corrections { grid-area: corrections; }
+#answers { grid-area: answers; }
+#urls { grid-area: urls; }
+#sidebar { grid-area: sidebar; }
+#pagination { grid-area: pagination; }
+
+#urls { margin: 0; padding: 0; }
+
+/* result count strip (SearXNG renders engine messages; here a slim meta line) */
+.results_meta { color: var(--g-text-tertiary); font-size: 13px; margin: 0 0 18px; }
+
+/* ---- one organic result (article.result.result-default) ---- */
+article.result {
+  margin-bottom: 30px; max-width: var(--g-results-width);
+  animation: result-in .32s ease both;
+}
+article.result-default { padding: 0; }
+
+a.url_header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
+  color: inherit; text-decoration: none; max-width: 100%;
+}
+a.url_header:hover { text-decoration: none; }
+a.url_header .favicon {
+  flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--g-surface); display: grid; place-items: center; overflow: hidden;
+}
+a.url_header .favicon img { width: 18px; height: 18px; border-radius: 50%; }
+.url_wrapper { display: flex; flex-direction: column; min-width: 0; }
+.url_wrapper .url_o1 .url_i1 { /* site name */
+  display: block; font-size: 14px; line-height: 18px; color: var(--g-url-sitename);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.url_wrapper .url_o2 .url_i2 { /* breadcrumb path */
+  display: block; font-size: 12px; line-height: 16px; color: var(--g-url);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+article.result h3 { margin: 0; }
+article.result h3 a {
+  font-family: var(--g-font-display); font-weight: 400; font-size: 20px; line-height: 1.3;
+  color: var(--g-link); text-decoration: none;
+}
+article.result h3 a:visited { color: var(--g-link-visited); }
+article.result h3 a:hover { text-decoration: underline; }
+
+p.content {
+  margin: 4px 0 0; font-size: 14px; line-height: 1.58; color: var(--g-text);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+p.content.empty_element { display: none; }
+
+.engines { margin-top: 6px; display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--g-text-tertiary); }
+.engines span {
+  background: var(--g-surface); border-radius: 10px; padding: 1px 8px; line-height: 18px;
+  text-transform: lowercase;
+}
+.engines a.cache_link { color: var(--g-text-tertiary); }
+.break { flex-basis: 100%; height: 0; }
+
+/* published date / meta sub-header */
+.published_date { color: var(--g-text-tertiary); font-size: 13px; }
+
+/* =====================================================================
+   9. IMAGE RESULTS  (#results.only_template_images)  (-> result_types/image.less)
+   ===================================================================== */
+#results.only_template_images { display: block; padding-left: var(--g-results-offset); padding-right: 28px; }
+#results.only_template_images #urls {
+  display: flex; flex-wrap: wrap; gap: 4px; max-width: none;
+}
+article.result-images {
+  margin: 0; flex: 1 0 auto; animation: result-in .3s ease both;
+}
+article.result-images > a { display: block; text-decoration: none; }
+article.result-images .image_thumbnail {
+  display: block; height: 180px; width: auto; max-width: 320px; min-width: 120px;
+  object-fit: cover; border-radius: 8px; background: var(--g-surface);
+}
+article.result-images .title {
+  display: block; font-size: 13px; color: var(--g-text); margin-top: 6px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px;
+}
+article.result-images .source { display: block; font-size: 12px; color: var(--g-text-secondary); }
+article.result-images .image_resolution { display: none; }
+article.result-images:hover .image_thumbnail { box-shadow: var(--g-shadow-card); }
+article.result-images .detail { display: none; }
+
+/* =====================================================================
+   10. SIDEBAR  (#sidebar)  — Google "knowledge panel"-style cards
+   ===================================================================== */
+#sidebar { display: flex; flex-direction: column; gap: 18px; padding-top: 4px; }
+#infoboxes .infobox, #suggestions, #sidebar .sidebar-collapsible {
+  border: 1px solid var(--g-border); border-radius: var(--g-radius-card);
+  background: var(--g-bg-elevated); padding: 18px; box-shadow: var(--g-shadow-card);
+}
+#infoboxes .infobox h2.title, #sidebar summary.title {
+  margin: 0 0 10px; font-family: var(--g-font-display); font-weight: 500; font-size: 18px; color: var(--g-text);
+}
+#infoboxes .infobox img { max-width: 100%; border-radius: 8px; margin-bottom: 10px; }
+#infoboxes .infobox p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; color: var(--g-text-secondary); }
+#infoboxes .attributes { width: 100%; border-collapse: collapse; font-size: 13px; }
+#infoboxes .attributes td { padding: 4px 0; vertical-align: top; }
+#infoboxes .attributes td:first-child { color: var(--g-text-tertiary); padding-right: 12px; white-space: nowrap; }
+#infoboxes .urls { list-style: none; margin: 12px 0 0; padding: 12px 0 0; border-top: 1px solid var(--g-border); }
+#infoboxes .urls li a { color: var(--g-accent); font-size: 14px; }
+
+#sidebar summary.title { cursor: default; list-style: none; }
+#sidebar summary.title::-webkit-details-marker { display: none; }
+#sidebar summary.title::marker { content: ""; }
+#suggestions ul.wrapper { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+#suggestions ul.wrapper li input.suggestion {
+  width: 100%; text-align: left; background: var(--g-surface); border: 0;
+  border-radius: 18px; padding: 9px 16px; font-size: 14px; color: var(--g-text);
+  display: flex; align-items: center;
+}
+#suggestions ul.wrapper li input.suggestion:hover { background: var(--g-surface-2); }
+
+/* =====================================================================
+   11. PAGINATION  (#pagination)
+   ===================================================================== */
+#pagination { margin-top: 22px; }
+#pagination .numbered_pagination { display: flex; align-items: center; gap: 6px; }
+#pagination form { margin: 0; }
+#pagination input.page_number, #pagination input.page_number_current,
+#pagination .previous_page button, #pagination .next_page button {
+  border: 0; background: transparent; font-family: var(--g-font-body); font-size: 14px;
+  color: var(--g-link); padding: 8px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;
+}
+#pagination input.page_number:hover, #pagination .previous_page button:hover, #pagination .next_page button:hover {
+  background: var(--g-surface-2); text-decoration: underline; cursor: pointer;
+}
+#pagination input.page_number_current { color: var(--g-text); font-weight: 500; }
+#pagination .left, #pagination .right { display: inline-flex; }
+
+/* =====================================================================
+   12. PREFERENCES  (.tabs)  (-> preferences.less)
+   ===================================================================== */
+#main_preferences, main.page_with_header { max-width: 980px; margin: 0 auto; padding: 0 24px 80px; }
+main.page_with_header > a .logo, .page_with_header .logo { height: 36px; }
+#main_preferences h1 { font-family: var(--g-font-display); font-weight: 500; font-size: 28px; margin: 28px 0 18px; }
+
+.tabs { display: flex; flex-wrap: wrap; }
+.tabs > input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+.tabs > label[role="tab"] {
+  order: -1; padding: 12px 18px; font-size: 14px; color: var(--g-tab-inactive);
+  border-bottom: 3px solid transparent; cursor: pointer; font-family: var(--g-font-display); font-weight: 500;
+}
+.tabs > label[role="tab"]:hover { color: var(--g-text); }
+.tabs > section[role="tabpanel"] { display: none; width: 100%; padding: 26px 2px; }
+/* checked radio -> show matching panel + active label (pairs are adjacent in DOM) */
+.tabs > input:checked + label[role="tab"] { color: var(--g-tab-active); border-bottom-color: var(--g-accent); }
+.tabs > input:checked + label + section[role="tabpanel"] { display: block; }
+
+fieldset { border: 0; padding: 0; margin: 0 0 26px; }
+fieldset legend {
+  font-family: var(--g-font-display); font-weight: 500; font-size: 16px; color: var(--g-text);
+  padding: 0; margin-bottom: 6px;
+}
+fieldset .description { color: var(--g-text-tertiary); font-size: 13px; margin-top: 6px; max-width: 60ch; }
+fieldset .value { margin-top: 6px; }
+.pref-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start;
+  padding: 16px 0; border-bottom: 1px solid var(--g-border); }
+.pref-row:last-child { border-bottom: 0; }
+select, .styled-select {
+  appearance: none; font-family: var(--g-font-body); font-size: 14px; color: var(--g-text);
+  background: var(--g-bg); border: 1px solid var(--g-border); border-radius: 8px;
+  height: 40px; padding: 0 38px 0 14px; min-width: 200px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+}
+
+/* on/off toggle (input.checkbox-onoff) */
+.checkbox-onoff { appearance: none; position: relative; width: 40px; height: 22px;
+  background: var(--g-surface-2); border: 1px solid var(--g-border); border-radius: 22px; transition: background .15s; }
+.checkbox-onoff::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
+  border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: transform .15s; }
+.checkbox-onoff:checked { background: var(--g-accent); border-color: var(--g-accent); }
+.checkbox-onoff:checked::after { transform: translateX(18px); }
+
+.pref-actions { margin-top: 30px; display: flex; gap: 12px; }
+.btn-primary { background: var(--g-accent); color: #fff; border: 0; height: 40px; padding: 0 24px;
+  border-radius: 8px; font: 500 14px var(--g-font-display); }
+html.theme-dark .btn-primary { color: #062e6f; background: #a8c7fa; }
+.btn-primary:hover { box-shadow: var(--g-shadow-card); }
+
+/* =====================================================================
+   13. FOOTER
+   ===================================================================== */
+footer {
+  margin-top: 60px; background: var(--g-footer-bg); border-top: 1px solid var(--g-border);
+  color: var(--g-footer-text); font-size: 13px;
+}
+#main_index footer { width: 100%; margin-top: auto; }
+footer .footer-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  padding: 15px 27px; }
+footer .footer-row.region { border-bottom: 1px solid var(--g-border); color: var(--g-text-tertiary); }
+footer nav { display: flex; gap: 26px; flex-wrap: wrap; }
+footer a { color: var(--g-footer-text); }
+footer a:hover { color: var(--g-text-secondary); }
+
+/* =====================================================================
+   14. ANIMATIONS
+   ===================================================================== */
+@keyframes result-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+article.result:nth-child(1) { animation-delay: .02s; }
+article.result:nth-child(2) { animation-delay: .06s; }
+article.result:nth-child(3) { animation-delay: .10s; }
+article.result:nth-child(4) { animation-delay: .14s; }
+article.result:nth-child(5) { animation-delay: .18s; }
+article.result:nth-child(6) { animation-delay: .22s; }
+@media (prefers-reduced-motion: reduce) { article.result { animation: none; } }
+
+/* =====================================================================
+   15. RESPONSIVE  (tablet/phone collapse, mirrors SearXNG breakpoints)
+   ===================================================================== */
+@media (max-width: 1180px) {
+  :root { --g-results-offset: 24px; --g-sidebar-width: 320px; }
+  #categories { padding-left: 24px; }
+  .search_filters { padding-left: 24px; }
+}
+@media (max-width: 900px) {
+  #results { grid-template: "corrections" min-content "answers" min-content "sidebar" min-content "urls" 1fr "pagination" min-content / minmax(0, var(--g-results-width)); column-gap: 0; }
+  #sidebar { padding-top: 0; }
+  #search_header { grid-template-columns: auto 1fr; padding-right: 16px; }
+  #main_results #search_view { max-width: none; }
+}
+@media (max-width: 560px) {
+  #main_index { padding-top: 16vh; }
+  #main_index .title .wordmark { font-size: 56px; }
+  #main_index .index-buttons { flex-direction: column; width: 100%; max-width: 320px; }
+  .g-btn { width: 100%; }
+  #links_on_top { gap: 14px; padding: 12px 14px; }
+}

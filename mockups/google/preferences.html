@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="no-js theme-auto center-alignment-no" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Préférences — SearXNG (maquette thème Google)</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="mock.css">
+</head>
+<body class="preferences_endpoint">
+  <main id="main_preferences" class="page_with_header">
+    <nav id="links_on_top">
+      <a href="index.html" class="link_on_top_about">Accueil</a>
+      <a href="results.html" class="link_on_top_about">Résultats</a>
+    </nav>
+
+    <!-- page_with_header logo block -->
+    <a href="index.html" style="display:inline-block;margin-top:26px">
+      <span class="wordmark logo" style="font-size:24px" aria-label="SearXNG">
+        <span class="c1">S</span><span class="c2">e</span><span class="c3">a</span><span class="c4">r</span><span class="x">X</span><span class="c5">N</span><span class="c6">G</span>
+      </span>
+    </a>
+
+    <h1>Préférences</h1>
+
+    <form id="search_form" method="post" action="preferences.html" autocomplete="off">
+      <div class="tabs" role="tablist">
+
+        <!-- TAB: Général -->
+        <input type="radio" name="maintab" id="tab-general" checked>
+        <label id="tab-label-general" for="tab-general" role="tab">Général</label>
+        <section id="tab-content-general" role="tabpanel">
+          <fieldset>
+            <legend>Catégories par défaut</legend>
+            <div class="value" style="display:flex;gap:8px;flex-wrap:wrap">
+              <label class="chip-check"><input type="checkbox" checked> Tout</label>
+              <label class="chip-check"><input type="checkbox"> Images</label>
+              <label class="chip-check"><input type="checkbox"> Vidéos</label>
+              <label class="chip-check"><input type="checkbox"> Actualités</label>
+              <label class="chip-check"><input type="checkbox"> Cartes</label>
+            </div>
+            <div class="description">Catégories activées par défaut au chargement de la page d'accueil.</div>
+          </fieldset>
+          <div class="pref-row">
+            <div><legend>Langue de recherche</legend><div class="description">Langue préférée pour les résultats.</div></div>
+            <select><option selected>Français</option><option>English</option><option>Toutes</option></select>
+          </div>
+          <div class="pref-row">
+            <div><legend>Autocomplétion</legend><div class="description">Suggestions pendant la saisie.</div></div>
+            <select><option selected>DuckDuckGo</option><option>Google</option><option>Désactivée</option></select>
+          </div>
+          <div class="pref-row">
+            <div><legend>Favicons des résultats</legend><div class="description">Affiche l'icône du site à côté de chaque résultat.</div></div>
+            <input type="checkbox" class="checkbox-onoff" checked>
+          </div>
+          <div class="pref-row">
+            <div><legend>SafeSearch</legend><div class="description">Filtrage des contenus explicites.</div></div>
+            <select><option>Strict</option><option selected>Modéré</option><option>Aucun</option></select>
+          </div>
+        </section>
+
+        <!-- TAB: Apparence -->
+        <input type="radio" name="maintab" id="tab-ui">
+        <label id="tab-label-ui" for="tab-ui" role="tab">Apparence</label>
+        <section id="tab-content-ui" role="tabpanel">
+          <div class="pref-row">
+            <div><legend>Thème</legend><div class="description">Habillage de l'interface.</div></div>
+            <select><option selected>google</option><option>simple</option></select>
+          </div>
+          <div class="pref-row">
+            <div><legend>Style (clair / sombre)</legend><div class="description">Suit le système en mode « auto ».</div></div>
+            <select><option selected>auto</option><option>light</option><option>dark</option><option>black</option></select>
+          </div>
+          <div class="pref-row">
+            <div><legend>Centrer les résultats</legend><div class="description">Disposition centrée plutôt qu'alignée à gauche.</div></div>
+            <input type="checkbox" class="checkbox-onoff">
+          </div>
+          <div class="pref-row">
+            <div><legend>Ouvrir les liens dans un nouvel onglet</legend><div class="description"></div></div>
+            <input type="checkbox" class="checkbox-onoff" checked>
+          </div>
+          <div class="pref-row">
+            <div><legend>Défilement infini</legend><div class="description">Charge la page suivante automatiquement.</div></div>
+            <input type="checkbox" class="checkbox-onoff" checked>
+          </div>
+        </section>
+
+        <!-- TAB: Confidentialité -->
+        <input type="radio" name="maintab" id="tab-privacy">
+        <label id="tab-label-privacy" for="tab-privacy" role="tab">Confidentialité</label>
+        <section id="tab-content-privacy" role="tabpanel">
+          <div class="pref-row">
+            <div><legend>Méthode HTTP</legend><div class="description">GET expose la requête dans l'URL ; POST la masque.</div></div>
+            <select><option selected>POST</option><option>GET</option></select>
+          </div>
+          <div class="pref-row">
+            <div><legend>Proxy d'images</legend><div class="description">Les vignettes transitent par l'instance, pas par le site source.</div></div>
+            <input type="checkbox" class="checkbox-onoff" checked>
+          </div>
+          <div class="pref-row">
+            <div><legend>Requête dans le titre de l'onglet</legend><div class="description"></div></div>
+            <input type="checkbox" class="checkbox-onoff">
+          </div>
+        </section>
+
+        <!-- TAB: Moteurs -->
+        <input type="radio" name="maintab" id="tab-engines">
+        <label id="tab-label-engines" for="tab-engines" role="tab">Moteurs</label>
+        <section id="tab-content-engines" role="tabpanel">
+          <fieldset>
+            <legend>Moteurs activés</legend>
+            <div class="value">
+              <div class="pref-row"><div>Google</div><input type="checkbox" class="checkbox-onoff" checked></div>
+              <div class="pref-row"><div>Brave</div><input type="checkbox" class="checkbox-onoff" checked></div>
+              <div class="pref-row"><div>DuckDuckGo</div><input type="checkbox" class="checkbox-onoff" checked></div>
+              <div class="pref-row"><div>Qwant</div><input type="checkbox" class="checkbox-onoff"></div>
+              <div class="pref-row"><div>Wikipedia</div><input type="checkbox" class="checkbox-onoff" checked></div>
+            </div>
+          </fieldset>
+        </section>
+
+        <!-- TAB: Cookies -->
+        <input type="radio" name="maintab" id="tab-cookies">
+        <label id="tab-label-cookies" for="tab-cookies" role="tab">Cookies</label>
+        <section id="tab-content-cookies" role="tabpanel">
+          <fieldset>
+            <legend>Vos préférences</legend>
+            <div class="description">Ces paramètres sont stockés dans vos cookies ; aucune donnée n'est envoyée à un tiers. Vous pouvez exporter ou réinitialiser votre configuration.</div>
+          </fieldset>
+        </section>
+      </div>
+
+      <div class="pref-actions">
+        <button type="submit" class="btn-primary">Enregistrer</button>
+        <button type="reset" class="g-btn">Réinitialiser</button>
+      </div>
+    </form>
+
+    <footer>
+      <div class="footer-row">
+        <nav><a href="#">À propos</a><a href="#">Code source</a></nav>
+        <nav><a href="#">Confidentialité</a></nav>
+      </div>
+    </footer>
+  </main>
+
+  <style>
+    .chip-check{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--g-border);
+      border-radius:999px;padding:7px 14px;font-size:14px;color:var(--g-text);cursor:pointer}
+    .chip-check input{accent-color:var(--g-accent)}
+    #main_preferences .pref-row legend{font-size:15px}
+  </style>
+  <div class="mock-theme-switch">
+    <button data-theme-btn="light">Clair</button>
+    <button data-theme-btn="dark">Sombre</button>
+    <button data-theme-btn="auto">Auto</button>
+  </div>
+  <script src="demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+/* Mockup-only chrome (theme switcher + favicon-letter placeholders).
+   None of this ships in the real SearXNG theme. */
+.mock-theme-switch {
+  position: fixed; right: 14px; bottom: 14px; z-index: 99; display: flex; gap: 2px;
+  background: var(--g-bg-elevated); border: 1px solid var(--g-border); border-radius: 999px;
+  padding: 4px; box-shadow: var(--g-shadow-card); font-family: var(--g-font-body); font-size: 12px;
+}
+.mock-theme-switch button {
+  border: 0; background: transparent; color: var(--g-text-secondary);
+  padding: 6px 12px; border-radius: 999px; cursor: pointer;
+}
+.mock-theme-switch button[aria-pressed="true"] { background: var(--g-accent); color: #fff; }
+html.theme-dark .mock-theme-switch button[aria-pressed="true"] { color: #062e6f; background: #a8c7fa; }
+
+/* favicon-letter placeholder (stands in for real favicons in the mockup) */
+.favicon .fav-letter {
+  font: 600 12px var(--g-font-display); color: #fff; line-height: 1;
+}

@@ -1,0 +1,900 @@
+/* =====================================================================
+   SearXNG · "google" theme  —  Google-look override layer
+   ---------------------------------------------------------------------
+   Loaded AFTER simple's compiled CSS (concatenated by build.sh). Two jobs:
+     1. RECOLOUR everything by remapping simple's --color-* tokens to a
+        Google palette via --g-* tokens (light/dark/black/auto, automatic).
+     2. RESHAPE the main surfaces to Google's layout — a centered content
+        column (clean on wide screens), Google search pill, underline tabs,
+        flat results, knowledge-panel sidebar, image grid, preferences.
+
+   Only real SearXNG features are surfaced (no fake voice/lens/lucky).
+   Fidelity: Google Search 2024–2026. No Google trademarked assets.
+   ===================================================================== */
+
+/* =====================================================================
+   1. GOOGLE PALETTE TOKENS (--g-*)  — light / dark / auto
+   ===================================================================== */
+:root {
+  --g-font-body: arial, "Helvetica Neue", helvetica, sans-serif;
+  --g-font-display: "Google Sans", "Product Sans", "Poppins", arial, sans-serif;
+
+  --g-bg: #ffffff;
+  --g-bg-elevated: #ffffff;
+  --g-surface: #f8f9fa;
+  --g-surface-2: #f1f3f4;
+  --g-chip-selected-bg: rgba(26, 115, 232, .12);
+  --g-text: #1f1f1f;
+  --g-text-secondary: #4d5156;
+  --g-text-tertiary: #5f6368;
+  --g-link: #1a0dab;
+  --g-link-visited: #681da8;
+  --g-url: #4d5156;
+  --g-url-sitename: #1f1f1f;
+  --g-border: #dadce0;
+  --g-border-home: #dfe1e5;
+  --g-accent: #1a73e8;
+  --g-accent-contrast: #ffffff;
+  --g-tab-active: #1f1f1f;
+  --g-tab-inactive: #5f6368;
+  --g-btn-bg: #f8f9fa;
+  --g-btn-text: #3c4043;
+  --g-btn-border: #f8f9fa;
+  --g-btn-border-hover: #dadce0;
+  --g-footer-bg: #f2f2f2;
+  --g-footer-text: #70757a;
+  --g-brand-blue: #4285f4;
+  --g-brand-red: #ea4335;
+  --g-brand-yellow: #fbbc05;
+  --g-brand-green: #34a853;
+  --g-shadow-search: 0 1px 6px rgba(32, 33, 36, .28);
+  --g-shadow-search-rest: 0 1px 6px rgba(32, 33, 36, .12);
+  --g-shadow-card: 0 1px 3px rgba(32, 33, 36, .12), 0 1px 2px rgba(32, 33, 36, .08);
+  --g-search-bg: #ffffff;
+  --g-search-bg-focus: #ffffff;
+
+  /* a single centered content column keeps the page balanced on any width:
+     results(652) + gap(56) + sidebar(372) + h-padding(48) = 1128 */
+  --g-content-max: 1128px;
+  --g-results-width: 652px;
+  --g-sidebar-width: 372px;
+  --g-results-gap: 56px;
+  --g-search-width: 584px;
+  --g-radius-pill: 24px;
+  --g-radius-card: 12px;
+  --g-radius-btn: 8px;
+}
+
+:root.theme-dark,
+:root.theme-black {
+  --g-bg: #1f1f1f;
+  --g-bg-elevated: #2d2e30;
+  --g-surface: #303134;
+  --g-surface-2: #28292a; --g-chip-selected-bg: rgba(138, 180, 248, .2);
+  --g-text: #e8e8e8;
+  --g-text-secondary: #bdc1c6;
+  --g-text-tertiary: #9aa0a6;
+  --g-link: #99c3ff;
+  --g-link-visited: #c58af9;
+  --g-url: #bdc1c6;
+  --g-url-sitename: #e8e8e8;
+  --g-border: #3c4043;
+  --g-border-home: #5f6368;
+  --g-accent: #8ab4f8;
+  --g-accent-contrast: #062e6f;
+  --g-tab-active: #e8e8e8;
+  --g-tab-inactive: #9aa0a6;
+  --g-btn-bg: #303134;
+  --g-btn-text: #e8eaed;
+  --g-btn-border: #303134;
+  --g-btn-border-hover: #5f6368;
+  --g-footer-bg: #1f1f1f;
+  --g-footer-text: #bdc1c6;
+  --g-shadow-search: rgba(0, 0, 0, .55) 0 4px 12px;
+  --g-shadow-search-rest: rgba(0, 0, 0, .25) 0 1px 4px;
+  --g-shadow-card: rgba(0, 0, 0, .35) 0 1px 3px;
+  --g-search-bg: #4d5156;
+  --g-search-bg-focus: #303134;
+}
+:root.theme-black {
+  --g-bg: #000000;
+  --g-bg-elevated: #121212;
+  --g-footer-bg: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root.theme-auto {
+    --g-bg: #1f1f1f; --g-bg-elevated: #2d2e30; --g-surface: #303134; --g-surface-2: #28292a; --g-chip-selected-bg: rgba(138, 180, 248, .2);
+    --g-text: #e8e8e8; --g-text-secondary: #bdc1c6; --g-text-tertiary: #9aa0a6;
+    --g-link: #99c3ff; --g-link-visited: #c58af9; --g-url: #bdc1c6; --g-url-sitename: #e8e8e8;
+    --g-border: #3c4043; --g-border-home: #5f6368; --g-accent: #8ab4f8; --g-accent-contrast: #062e6f;
+    --g-tab-active: #e8e8e8; --g-tab-inactive: #9aa0a6;
+    --g-btn-bg: #303134; --g-btn-text: #e8eaed; --g-btn-border: #303134; --g-btn-border-hover: #5f6368;
+    --g-footer-bg: #1f1f1f; --g-footer-text: #bdc1c6;
+    --g-shadow-search: rgba(0, 0, 0, .55) 0 4px 12px;
+    --g-shadow-search-rest: rgba(0, 0, 0, .25) 0 1px 4px;
+    --g-shadow-card: rgba(0, 0, 0, .35) 0 1px 3px;
+    --g-search-bg: #4d5156; --g-search-bg-focus: #303134;
+  }
+}
+
+/* =====================================================================
+   2. BRIDGE — remap simple's --color-* to the Google palette
+   ===================================================================== */
+:root,
+:root.theme-dark,
+:root.theme-black {
+  --color-base-font: var(--g-text);
+  --color-base-background: var(--g-bg);
+  --color-base-background-mobile: var(--g-bg);
+  --color-url-font: var(--g-link);
+  --color-url-visited-font: var(--g-link-visited);
+
+  --color-header-background: var(--g-bg);
+  --color-header-border: var(--g-border);
+  --color-footer-background: var(--g-footer-bg);
+  --color-footer-border: var(--g-border);
+
+  --color-sidebar-border: var(--g-border);
+  --color-sidebar-font: var(--g-text);
+  --color-sidebar-background: var(--g-bg-elevated);
+
+  --color-backtotop-font: var(--g-accent);
+  --color-backtotop-border: var(--g-border);
+  --color-backtotop-background: var(--g-bg-elevated);
+
+  --color-btn-background: var(--g-accent);
+  --color-btn-font: var(--g-accent-contrast);
+  --color-show-btn-background: var(--g-surface);
+  --color-show-btn-font: var(--g-text);
+
+  --color-search-border: var(--g-border);
+  --color-search-background: var(--g-search-bg);
+  --color-search-font: var(--g-text);
+  --color-search-background-hover: var(--g-accent);
+
+  --color-categories-item-selected-font: var(--g-tab-active);
+  --color-categories-item-border-selected: var(--g-tab-active);
+
+  --color-autocomplete-font: var(--g-text);
+  --color-autocomplete-border: var(--g-border);
+  --color-autocomplete-background: var(--g-bg-elevated);
+  --color-autocomplete-background-hover: var(--g-surface-2);
+
+  --color-answer-font: var(--g-text);
+  --color-answer-background: var(--g-bg-elevated);
+
+  --color-result-keyvalue-col-table: var(--g-surface);
+  --color-result-keyvalue-odd: var(--g-surface);
+  --color-result-keyvalue-even: var(--g-bg-elevated);
+
+  --color-result-background: transparent;
+  --color-result-border: transparent;
+  --color-result-url-font: var(--g-url);
+  --color-result-vim-selected: var(--g-surface-2);
+  --color-result-vim-arrow: var(--g-accent);
+  --color-result-description-highlight-font: var(--g-text);
+  --color-result-link-font: var(--g-link);
+  --color-result-link-font-highlight: var(--g-link);
+  --color-result-link-visited-font: var(--g-link-visited);
+  --color-result-publishdate-font: var(--g-text-tertiary);
+  --color-result-engines-font: var(--g-text-tertiary);
+  --color-result-search-url-border: var(--g-border);
+  --color-result-search-url-font: var(--g-text);
+
+  --color-result-image-span-font: var(--g-text);
+  --color-result-image-background: transparent;
+
+  --color-settings-tr-hover: var(--g-surface);
+  --color-settings-engine-description-font: var(--g-text-tertiary);
+
+  --color-toolkit-badge-background: var(--g-text-tertiary);
+  --color-toolkit-dialog-border: var(--g-border);
+  --color-toolkit-dialog-background: var(--g-bg-elevated);
+  --color-toolkit-tabs-section-border: var(--g-border);
+  --color-toolkit-select-background: var(--g-bg);
+  --color-toolkit-select-border: var(--g-border);
+  --color-toolkit-select-background-hover: var(--g-surface-2);
+  --color-toolkit-input-text-font: var(--g-text);
+  --color-toolkit-checkbox-onoff-on-mark-background: var(--g-accent);
+  --color-toolkit-checkbox-input-border: var(--g-accent);
+  --color-toolkit-engine-tooltip-border: var(--g-border);
+  --color-toolkit-engine-tooltip-background: var(--g-bg-elevated);
+
+  --color-image-resolution-background: rgb(0 0 0 / 55%);
+  --color-image-resolution-font: #fff;
+
+  --color-favicon-background-color: var(--g-surface);
+  --color-favicon-border-color: var(--g-border);
+}
+@media (prefers-color-scheme: dark) {
+  :root.theme-auto {
+    --color-base-font: var(--g-text); --color-base-background: var(--g-bg);
+    --color-base-background-mobile: var(--g-bg);
+    --color-url-font: var(--g-link); --color-url-visited-font: var(--g-link-visited);
+    --color-header-background: var(--g-bg); --color-header-border: var(--g-border);
+    --color-footer-background: var(--g-footer-bg); --color-footer-border: var(--g-border);
+    --color-sidebar-border: var(--g-border); --color-sidebar-font: var(--g-text);
+    --color-sidebar-background: var(--g-bg-elevated);
+    --color-backtotop-font: var(--g-accent); --color-backtotop-background: var(--g-bg-elevated);
+    --color-btn-background: var(--g-accent); --color-btn-font: var(--g-accent-contrast);
+    --color-search-border: var(--g-border); --color-search-background: var(--g-search-bg);
+    --color-search-font: var(--g-text);
+    --color-categories-item-selected-font: var(--g-tab-active);
+    --color-categories-item-border-selected: var(--g-tab-active);
+    --color-autocomplete-background: var(--g-bg-elevated);
+    --color-autocomplete-background-hover: var(--g-surface-2);
+    --color-autocomplete-border: var(--g-border); --color-autocomplete-font: var(--g-text);
+    --color-answer-font: var(--g-text); --color-answer-background: var(--g-bg-elevated);
+    --color-result-background: transparent; --color-result-border: transparent;
+    --color-result-url-font: var(--g-url); --color-result-link-font: var(--g-link);
+    --color-result-link-visited-font: var(--g-link-visited);
+    --color-result-publishdate-font: var(--g-text-tertiary);
+    --color-result-engines-font: var(--g-text-tertiary);
+    --color-result-image-span-font: var(--g-text); --color-result-image-background: transparent;
+    --color-toolkit-select-background: var(--g-bg); --color-toolkit-select-border: var(--g-border);
+    --color-toolkit-checkbox-onoff-on-mark-background: var(--g-accent);
+    --color-favicon-background-color: var(--g-surface);
+  }
+}
+
+/* =====================================================================
+   3. TYPOGRAPHY & ICON HELPERS
+   ===================================================================== */
+body, input, select, button, textarea, .content, article.result h3 a {
+  font-family: var(--g-font-body);
+}
+svg.icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; flex: 0 0 auto; }
+
+.wordmark { font-family: var(--g-font-display); font-weight: 600; letter-spacing: -.5px;
+  line-height: 1; user-select: none; white-space: nowrap; }
+.wordmark .c1 { color: var(--g-brand-blue); }
+.wordmark .c2 { color: var(--g-brand-red); }
+.wordmark .c3 { color: var(--g-brand-yellow); }
+.wordmark .c4 { color: var(--g-brand-blue); }
+.wordmark .c5 { color: var(--g-brand-green); }
+.wordmark .c6 { color: var(--g-brand-red); }
+.wordmark .x  { color: var(--g-text-tertiary); font-weight: 700; }
+
+/* =====================================================================
+   4. TOP-RIGHT NAV (#links_on_top)
+   ===================================================================== */
+#links_on_top {
+  position: absolute; top: 0; right: 0; left: auto; width: auto;
+  display: flex; align-items: center; gap: 22px;
+  padding: 16px 26px; font-size: 13px; z-index: 30; background: transparent; border: 0;
+}
+#links_on_top a { color: var(--g-text); display: inline-flex; align-items: center; gap: 6px; }
+#links_on_top a:hover { text-decoration: underline; }
+
+/* =====================================================================
+   5. RESULTS-PAGE HEADER — centered content column, Google layout
+   ===================================================================== */
+#main_results #search { padding: 0; margin: 0; }
+
+#main_results #search_header,
+.center-alignment-yes #main_results #search_header {
+  position: relative;
+  max-width: var(--g-content-max); width: auto; margin: 0 auto; padding: 18px 24px 0;
+  display: grid; grid-template-columns: auto 1fr;
+  grid-template-areas: "logo search" "categories categories";
+  align-items: center; column-gap: 20px; row-gap: 14px;
+  background: var(--g-bg); border: 0; box-shadow: none;
+}
+/* full-bleed hairline under the category tabs (edge to edge of the screen) */
+#main_results #search_header::after {
+  content: ""; position: absolute; bottom: 0; left: 50%; margin-left: -50vw; width: 100vw;
+  border-bottom: 1px solid var(--g-border); pointer-events: none;
+}
+/* clip on the root (not on #main_results — that would become the sticky
+   sidebar's scroll container and break position:sticky) */
+html { overflow-x: clip; }
+#main_results #search_logo { grid-area: logo; display: inline-flex; align-items: center; align-self: stretch; height: auto; margin: 0; padding: 0; }
+#main_results #search_logo .wordmark { font-size: 26px; position: relative; top: 2px; }
+#main_results #search_logo svg, #main_results #search_logo img { display: none; }
+#main_results #search_view { grid-area: search; max-width: 700px; width: 100%; margin: 0; justify-self: start; }
+
+/* =====================================================================
+   6. SEARCH BOX (.search_box) — Google pill, magnifier (submit) on left
+   ===================================================================== */
+.search_box {
+  position: relative; display: flex; align-items: center;
+  width: 100%; height: 46px; padding: 0 6px; gap: 0;
+  background: var(--g-search-bg); border: 1px solid var(--g-border-home);
+  border-radius: var(--g-radius-pill); box-shadow: none; overflow: visible;
+  transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
+}
+.search_box:hover,
+.search_box:focus-within { border-color: transparent; box-shadow: var(--g-shadow-search); }
+:root.theme-dark .search_box,
+:root.theme-black .search_box { border-color: transparent; }
+:root.theme-dark .search_box:hover, :root.theme-dark .search_box:focus-within,
+:root.theme-black .search_box:hover, :root.theme-black .search_box:focus-within { background: var(--g-search-bg-focus); }
+@media (prefers-color-scheme: dark) {
+  :root.theme-auto .search_box { border-color: transparent; }
+  :root.theme-auto .search_box:hover, :root.theme-auto .search_box:focus-within { background: var(--g-search-bg-focus); }
+}
+
+.search_box input#q {
+  order: 1; flex: 1 1 auto; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent;
+  font-size: 16px; color: var(--g-text); box-shadow: none; padding: 0 8px;
+}
+.search_box input#q::placeholder { color: var(--g-text-tertiary); opacity: 1; }
+
+/* the magnifier IS the real submit button — placed on the left (Google) */
+.search_box #send_search {
+  order: 0; width: 40px; height: 40px; min-width: 40px; flex: 0 0 auto;
+  border: 0; background: transparent; border-radius: 50%; padding: 0;
+  display: grid; place-items: center; color: var(--g-text-tertiary); box-shadow: none; margin: 0;
+}
+.search_box #send_search:hover { background: var(--g-surface-2); color: var(--g-text-secondary); }
+.search_box #clear_search {
+  order: 2; width: 40px; height: 40px; min-width: 40px; flex: 0 0 auto;
+  border: 0; background: transparent; border-radius: 50%; padding: 0;
+  display: grid; place-items: center; color: var(--g-text-tertiary); box-shadow: none; margin: 0;
+}
+.search_box #clear_search:hover { background: var(--g-surface-2); color: var(--g-text-secondary); }
+.search_box #send_search svg, .search_box #clear_search svg { width: 22px; height: 22px; }
+.search_box #send_search .show_if_nojs, .search_box #clear_search .show_if_nojs { display: none; }
+/* autocomplete dropdown — Google-style, anchored below the box (simple's
+   layout left it with a broken negative top that overlapped the logo) */
+.search_box .autocomplete {
+  order: 3; position: absolute !important; top: calc(100% + 8px) !important; bottom: auto !important;
+  left: 0 !important; right: 0; width: 100% !important; max-width: none !important; margin: 0 !important; z-index: 5000;
+}
+.search_box .autocomplete.open {
+  background: var(--g-bg-elevated); border: 1px solid var(--g-border); border-radius: 18px;
+  box-shadow: var(--g-shadow-search); max-height: 26rem; overflow-y: auto; padding: 8px 0;
+}
+.search_box .autocomplete ul { list-style: none; margin: 0; padding: 0; }
+.search_box .autocomplete ul li {
+  display: flex; align-items: center; gap: 14px; padding: 9px 20px; margin: 0;
+  font-size: 15px; line-height: 1.25; color: var(--g-text); cursor: pointer; border: 0; background: transparent;
+}
+.search_box .autocomplete ul li::before {
+  content: ""; flex: 0 0 auto; width: 18px; height: 18px; background-color: var(--g-text-tertiary);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center / 18px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center / 18px no-repeat;
+}
+.search_box .autocomplete ul li.active,
+.search_box .autocomplete ul li:hover { background: var(--g-surface-2); }
+
+/* =====================================================================
+   7. CATEGORY TABS (#categories) — centered underline tabs
+   ===================================================================== */
+#main_results #categories {
+  grid-area: categories; margin: 6px 0 0; padding: 0; border: 0; border-bottom: 0;
+  width: 100%; overflow-x: auto; overflow-y: hidden;
+}
+#main_results #categories_container {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 2px 6px;
+  width: auto; border: 0; padding: 0; box-shadow: none;
+}
+#categories .category_checkbox, #categories .category_button, #categories .category {
+  margin: 0; border: 0; background: transparent; box-shadow: none; width: auto;
+}
+#categories .category label,
+#categories button.category_button {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 14px 14px !important; height: 46px; cursor: pointer; margin: 0 !important;
+  font-size: 14px; color: var(--g-tab-inactive); background: transparent;
+  border: 0; border-bottom: 3px solid transparent; border-radius: 0; text-transform: capitalize;
+  transition: color .15s, border-color .15s;
+}
+#categories .category label svg, #categories button.category_button svg { width: 18px; height: 18px; padding: 0; }
+#categories .category label div.category_name { margin: 0; font-size: 14px; }
+#categories .category label:hover, #categories button.category_button:hover { color: var(--g-text); background: transparent; }
+#categories .category_checkbox input[type="checkbox"]:checked + label,
+#categories button.category_button.selected {
+  color: var(--g-tab-active); border-bottom: 3px solid var(--g-tab-active); font-weight: 500;
+}
+#categories .help { display: none; }
+
+/* =====================================================================
+   8. FILTERS (.search_filters) — clean Google pills (override !important padding)
+   ===================================================================== */
+#main_results .search_filters,
+.center-alignment-yes #main_results .search_filters {
+  max-width: var(--g-content-max); width: auto; margin: 12px auto 0; padding: 0 24px;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap; overflow: visible; border: 0;
+}
+#main_results .search_filters select {
+  appearance: none; -webkit-appearance: none; font-size: 13px; color: var(--g-text-secondary);
+  background-color: var(--g-surface); border: 1px solid var(--g-border); border-radius: 20px;
+  height: 40px; width: auto; max-width: none; box-shadow: none; line-height: 38px;
+  padding: 0 38px 0 16px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 16px;
+}
+:root.theme-dark #main_results .search_filters select,
+:root.theme-black #main_results .search_filters select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239aa0a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+}
+#main_results .search_filters select:hover { background-color: var(--g-surface-2); color: var(--g-text); }
+
+/* =====================================================================
+   9. RESULTS GRID (#results) — centered block (results + sidebar)
+   ===================================================================== */
+#main_results div#results,
+.center-alignment-yes #main_results div#results {
+  max-width: var(--g-content-max); width: auto; margin: 18px auto 0; padding: 0 24px;
+  display: grid;
+  grid-template:
+    "corrections sidebar" min-content
+    "answers     sidebar" min-content
+    "urls        sidebar" 1fr
+    "pagination  sidebar" min-content
+    / minmax(0, var(--g-results-width)) var(--g-sidebar-width);
+  column-gap: var(--g-results-gap); row-gap: 0;
+}
+/* keep simple's flex/centering harmless when "center alignment" pref is ON */
+.center-alignment-yes #main_results { display: block; align-items: stretch; }
+/* match simple's high-specificity center rule (2 classes + 2 ids) and win by source order */
+.center-alignment-yes #main_results #results:not(.only_template_images, .image-detail-open) {
+  grid-template-columns: minmax(0, var(--g-results-width)) var(--g-sidebar-width);
+  max-width: var(--g-content-max); width: auto; margin: 18px auto 0;
+}
+
+#corrections { grid-area: corrections; }
+#answers { grid-area: answers; }
+#urls { grid-area: urls; }
+#sidebar { grid-area: sidebar; }
+#pagination { grid-area: pagination; }
+#urls { margin: 0; padding: 0; max-width: var(--g-results-width); }
+
+#main_results #answers {
+  margin: 0 -20px 16px; padding: 18px 20px; max-width: calc(var(--g-results-width) + 40px);
+  border: 1px solid var(--g-border); border-radius: var(--g-radius-card);
+  background: var(--g-bg-elevated); box-shadow: var(--g-shadow-card);
+}
+#answers .title { font-family: var(--g-font-display); font-weight: 500; font-size: 16px; margin: 0 0 8px; color: var(--g-text); }
+#answers .answer { font-size: 15px; line-height: 1.6; color: var(--g-text); }
+#answers a.answer-url, #answers .answer-url { color: var(--g-accent); font-size: 13px; }
+#main_results #corrections { margin: 0 0 18px; max-width: var(--g-results-width); }
+
+/* one organic result */
+#urls article.result {
+  margin: 0 0 30px 0; padding: 0; border: 0; border-radius: 0; box-shadow: none;
+  background: transparent; max-width: var(--g-results-width);
+}
+#urls article.result .url_header { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; padding: 0; }
+#urls article.result .favicon {
+  flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--g-surface); display: grid; place-items: center; overflow: hidden; padding: 0; border: 0;
+}
+#urls article.result .favicon img { width: 18px; height: 18px; border-radius: 50%; }
+/* single-line breadcrumb: "domain › path › sub" (no orphaned "› fr" on its own line) */
+#urls article.result .url_wrapper {
+  display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center;
+  min-width: 0; line-height: 1.3; overflow: hidden; font-size: 14px;
+}
+/* force every breadcrumb part to the same size so baselines line up */
+#urls article.result .url_wrapper span { font-size: 14px; line-height: 1.3; vertical-align: baseline; }
+#urls article.result .url_wrapper .url_o1 { flex: 0 0 auto; }
+#urls article.result .url_wrapper .url_o1 .url_i1 { color: var(--g-url-sitename); }
+#urls article.result .url_wrapper [class^="url_o"]:not(.url_o1) {
+  flex: 0 1 auto; min-width: 0; color: var(--g-url);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#urls article.result h3 { margin: 0; padding: 0; font-weight: 400; }
+#urls article.result h3 a {
+  font-family: var(--g-font-display); font-weight: 400; font-size: 20px; line-height: 1.3;
+  color: var(--g-link); text-decoration: none;
+}
+#urls article.result h3 a:visited { color: var(--g-link-visited); }
+#urls article.result h3 a:hover { text-decoration: underline; }
+#urls article.result p.content { margin: 4px 0 0; padding: 0; font-size: 14px; line-height: 1.58; color: var(--g-text); }
+#urls article.result .engines { display: flex; align-items: center; flex-wrap: wrap; margin-top: 6px; gap: 8px; font-size: 12px; color: var(--g-text-tertiary); }
+#urls article.result .engines span {
+  background: var(--g-surface); border-radius: 10px; padding: 1px 8px; line-height: 18px; text-transform: lowercase;
+}
+#urls article.result .engines a.cache_link { color: var(--g-text-tertiary); }
+
+/* =====================================================================
+   10. IMAGE RESULTS — legible uniform grid with captions
+   ===================================================================== */
+/* high specificity to beat simple's justified-flex gallery (#main_results div#results.only_template_images …) */
+#main_results div#results.only_template_images,
+.center-alignment-yes #main_results div#results.only_template_images {
+  display: block; max-width: 1500px; margin: 12px auto 0; padding: 0 24px;
+}
+#main_results div#results.only_template_images #sidebar { display: none; }
+#main_results div#results.only_template_images #answers { max-width: none; }
+#main_results div#results.only_template_images #urls {
+  display: grid !important; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 22px 14px; max-width: none; margin: 0;
+}
+#main_results div#results.only_template_images #urls::after { content: none; flex-grow: 0; }
+#main_results div#results.only_template_images article.result-images {
+  flex-grow: 0; width: auto; height: auto; margin: 0; padding: 0; border: none !important; background: transparent;
+}
+#main_results div#results.only_template_images article.result-images > a {
+  position: relative; display: flex; flex-direction: column; gap: 6px; outline: none; text-decoration: none;
+}
+#main_results div#results.only_template_images article.result-images img.image_thumbnail {
+  position: static; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: 10px; background: var(--g-surface); display: block; vertical-align: bottom; transition: box-shadow .15s;
+}
+#main_results div#results.only_template_images article.result-images:hover img.image_thumbnail { box-shadow: var(--g-shadow-card); }
+#main_results div#results.only_template_images article.result-images span.title {
+  position: static; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  width: 100%; padding: 0; margin: 0; white-space: normal; overflow: hidden;
+  font-size: 13px; line-height: 1.35; color: var(--g-text);
+}
+#main_results div#results.only_template_images article.result-images span.source {
+  position: static; display: block; width: 100%; padding: 0; margin: 0;
+  font-size: 12px; color: var(--g-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#main_results div#results.only_template_images article.result-images .image_resolution {
+  position: absolute; top: 8px; right: 8px; left: auto; bottom: auto;
+  background: rgb(0 0 0 / 60%); color: #fff; font-size: 11px; line-height: 1; padding: 3px 6px; border-radius: 6px;
+}
+
+/* ---- image lightbox (clicking a thumbnail opens fullscreen) ----
+   The JS toggles #results.image-detail-open + article[data-vim-selected];
+   simple's right-panel positioning relies on .ltr-* mixins that don't apply
+   cleanly under this theme, so we fully own a centered fullscreen overlay. */
+#main_results #results.image-detail-open.only_template_images { width: auto !important; max-width: 1500px; }
+#main_results #results.image-detail-open article.result-images[data-vim-selected] .detail {
+  display: flex !important; flex-direction: column; align-items: center; justify-content: center;
+  position: fixed; inset: 0; top: 0 !important; right: 0 !important; bottom: 0 !important; left: 0 !important;
+  width: auto; height: auto; z-index: 3000; gap: 18px;
+  padding: 64px 24px 28px; background: rgb(0 0 0 / 92%); overflow: auto;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-images-source {
+  display: flex; align-items: center; justify-content: center; flex: 0 1 auto; max-width: 92vw; border: 0;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-images-source img {
+  max-width: 92vw; max-height: 74vh; width: auto; height: auto; object-fit: contain;
+  border-radius: 8px; background: transparent; padding: 0; margin: 0;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels {
+  color: #e8eaed; max-width: 760px; width: 100%; height: auto; text-align: center;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels h4 {
+  font-family: var(--g-font-display); font-size: 16px; font-weight: 500; margin: 0 0 8px; color: #fff; height: auto;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p {
+  font-size: 13px; color: #bdc1c6; margin: 4px 0; white-space: normal;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels p span { width: auto; margin-right: 6px; color: #9aa0a6; }
+#results.image-detail-open article.result-images[data-vim-selected] .detail .result-images-labels a { color: var(--g-accent); }
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next {
+  position: fixed; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+  background: rgb(255 255 255 / 12%); color: #fff; border: 0; filter: none; z-index: 3100;
+}
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close:hover,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous:hover,
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next:hover { background: rgb(255 255 255 / 24%); filter: none; }
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close { top: 20px; right: 24px; left: auto; }
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous { top: 50%; left: 24px; right: auto; transform: translateY(-50%); }
+#results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next { top: 50%; right: 24px; left: auto; transform: translateY(-50%); }
+
+/* ---- back-to-top: fixed bottom-right FAB (simple positions it mid-layout) ---- */
+#backToTop {
+  position: fixed !important; left: auto !important; right: 24px !important; top: auto !important; bottom: 24px !important;
+  margin: 0 !important; z-index: 1500;
+  background: transparent !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 !important; width: auto !important; height: auto !important;
+}
+#main_results #backToTop a {
+  box-sizing: border-box; display: grid; place-items: center;
+  width: 48px !important; height: 48px !important; min-width: 0; padding: 0 !important; border-radius: 50%;
+  background: var(--g-bg-elevated); color: var(--g-text-secondary);
+  border: 1px solid var(--g-border); box-shadow: var(--g-shadow-card); text-decoration: none;
+}
+#main_results #backToTop a svg { width: 22px; height: 22px; }
+#main_results #backToTop a:hover { background: var(--g-surface-2); color: var(--g-text); }
+
+/* =====================================================================
+   11. SIDEBAR (#sidebar) — knowledge-panel-style cards
+   ===================================================================== */
+#main_results #sidebar {
+  display: flex; flex-direction: column; gap: 18px; padding-top: 4px; margin: 0; border: 0;
+  /* float the sidebar and keep it pinned while scrolling the (longer) results.
+     align-self:start lets it shrink to content inside its full-height grid area;
+     sticky then pins it to the top of the viewport. */
+  position: sticky; top: 16px; align-self: start;
+  max-height: calc(100vh - 24px); overflow-y: auto; overflow-x: hidden; scrollbar-width: thin;
+}
+#main_results #sidebar::-webkit-scrollbar { width: 8px; }
+#main_results #sidebar::-webkit-scrollbar-thumb { background: var(--g-border); border-radius: 8px; }
+/* strong cards: knowledge panel + related searches */
+#sidebar #infoboxes .infobox,
+#sidebar #suggestions {
+  border: 1px solid var(--g-border); border-radius: var(--g-radius-card);
+  background: var(--g-bg-elevated); padding: 18px; box-shadow: var(--g-shadow-card); margin: 0;
+}
+/* de-emphasised utilities: response time / search URL / download — no borders
+   (the cards above already have their own; extra border-tops created double lines) */
+#sidebar #engines_msg,
+#sidebar #search_url,
+#sidebar #apis {
+  border: 0; background: transparent; box-shadow: none; padding: 0 2px; margin: 0; border-radius: 0;
+}
+/* stray 1px collapsible spacer left a hairline at the bottom of the sidebar */
+#sidebar #sidebar-end-collapsible { display: none; }
+/* the real "double line" source: inner <details.sidebar-collapsible> each carry a
+   border-top from simple — kill them (cards already provide their own borders) */
+#main_results #sidebar .sidebar-collapsible { border: 0 !important; }
+
+/* ---- sidebar utility details: clean spacing, chevron affordance, modern controls ---- */
+#sidebar .sidebar-collapsible > summary.title { position: relative; padding-right: 22px; }
+#sidebar .sidebar-collapsible > summary.title::after {
+  content: ""; position: absolute; right: 3px; top: 50%; width: 7px; height: 7px;
+  border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor;
+  transform: translateY(-70%) rotate(45deg); opacity: .55; transition: transform .15s;
+}
+#sidebar .sidebar-collapsible[open] > summary.title::after { transform: translateY(-30%) rotate(-135deg); }
+/* search URL → code box full-width, then "Copier" below it.
+   (<details> ignores flex `order`, so the box stays in flow and the button is
+   absolutely placed in a reserved bottom area — never overlapping the box.) */
+#sidebar #search_url details { display: block; position: relative; }
+#sidebar #search_url details[open] { padding-bottom: 46px; }
+/* simple clips the URL to one line (height:1.2em, overflow:hidden, pre width:200em)
+   — undo that so the full URL wraps and is readable */
+#sidebar #search_url .selectable_url {
+  clear: both; height: auto !important; overflow: visible !important;
+  line-height: normal !important; border: 0 !important; padding: 0 !important; margin: 10px 0 0 !important;
+}
+#sidebar #search_url #copy_url {
+  position: absolute; bottom: 0; left: 0; top: auto; right: auto; float: none !important; margin: 0 !important; display: none;
+}
+#sidebar #search_url details[open] #copy_url { display: inline-flex; align-items: center; }
+#sidebar #search_url .selectable_url pre {
+  float: none !important; width: auto !important; white-space: pre-wrap !important; word-break: break-all; overflow-wrap: anywhere;
+  margin: 0; padding: 10px 12px; background: var(--g-surface); border: 1px solid var(--g-border);
+  border-radius: 8px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px;
+  color: var(--g-text-secondary); max-height: 140px; overflow: auto;
+}
+#sidebar #search_url #copy_url {
+  margin: 10px 0 0; height: 34px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--g-border);
+  background: transparent; color: var(--g-accent); font: 500 13px var(--g-font-display); cursor: pointer;
+}
+#sidebar #search_url #copy_url:hover { background: var(--g-surface); border-color: var(--g-text-tertiary); }
+/* download (apis) → format chips */
+#sidebar #apis .wrapper { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+#sidebar #apis .wrapper .left { margin: 0; padding: 0; }
+#sidebar #apis .wrapper form { margin: 0; }
+#sidebar #apis input[type="submit"] {
+  height: 34px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--g-border);
+  background: transparent; color: var(--g-text); font: 500 12px var(--g-font-body);
+  text-transform: uppercase; letter-spacing: .4px; cursor: pointer; box-shadow: none;
+}
+#sidebar #apis input[type="submit"]:hover { background: var(--g-surface); border-color: var(--g-text-tertiary); color: var(--g-accent); }
+/* engine stats → clean rows + bars */
+#sidebar #engines_msg .engine-stats { width: 100%; margin-top: 10px; border-collapse: collapse; }
+#sidebar #engines_msg .engine-stats td { padding: 5px 0; border: 0; vertical-align: middle; }
+#sidebar #engines_msg .engine-name { padding-right: 12px; }
+#sidebar #engines_msg .engine-name a { color: var(--g-accent); text-decoration: none; font-size: 13px; }
+#sidebar #engines_msg .engine-name a:hover { text-decoration: underline; }
+#sidebar #engines_msg .response-error { color: var(--color-error); font-size: 12px; text-align: right; }
+#sidebar #engines_msg .response-time { display: flex; align-items: center; gap: 8px; }
+#sidebar #engines_msg .bar-chart-value { font-size: 12px; color: var(--g-text-secondary); min-width: 26px; }
+#sidebar #engines_msg .bar-chart-graph { flex: 1 1 auto; }
+#sidebar #engines_msg .bar-chart-bar { height: 6px; border-radius: 3px; background: var(--g-accent); }
+#sidebar #engines_msg .title, #sidebar #engines_msg summary.title,
+#sidebar #search_url summary.title, #sidebar #apis summary.title {
+  font-family: var(--g-font-body); font-size: 13px; font-weight: 400; color: var(--g-text-tertiary); margin: 0;
+}
+#sidebar .infobox h2.title,
+#sidebar summary.title {
+  margin: 0 0 10px; font-family: var(--g-font-display); font-weight: 500; font-size: 18px;
+  color: var(--g-text); border: 0; padding: 0;
+}
+#sidebar summary.title { cursor: pointer; list-style: none; }
+#sidebar summary.title::-webkit-details-marker { display: none; }
+#sidebar summary.title::marker { content: ""; }
+#sidebar .infobox img { max-width: 100%; border-radius: 8px; }
+#sidebar #suggestions ul.wrapper { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+#sidebar #suggestions input.suggestion {
+  width: 100%; text-align: left; background: var(--g-surface); border: 0;
+  border-radius: 18px; padding: 9px 16px; font-size: 14px; color: var(--g-text);
+}
+#sidebar #suggestions input.suggestion:hover { background: var(--g-surface-2); }
+
+/* =====================================================================
+   12. PAGINATION (#pagination)
+   ===================================================================== */
+#pagination { margin-top: 22px; border: 0; }
+#pagination .numbered_pagination { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+#pagination form { margin: 0; }
+#pagination input.page_number, #pagination input.page_number_current,
+#pagination .previous_page button, #pagination .next_page button {
+  border: 0; background: transparent; font-size: 14px; color: var(--g-link);
+  padding: 8px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  box-shadow: none; min-width: 0; width: auto; height: auto;
+}
+#pagination input.page_number:hover,
+#pagination .previous_page button:hover, #pagination .next_page button:hover {
+  background: var(--g-surface-2); text-decoration: underline; }
+#pagination input.page_number_current { color: var(--g-text); font-weight: 500; background: transparent; }
+
+/* =====================================================================
+   13. HOME PAGE (#main_index)
+   ===================================================================== */
+#main_index {
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  justify-content: flex-start; padding-top: 22vh; margin: 0; width: auto;
+}
+#main_index .index { display: flex; flex-direction: column; align-items: center; width: 100%; margin: 0; }
+#main_index .title { margin: 0 0 26px; background: none; }
+#main_index .title .wordmark { font-size: 88px; }
+#main_index .title h1 { margin: 0; visibility: visible; height: auto; text-indent: 0; }
+#main_index #search { width: 100%; display: flex; flex-direction: column; align-items: center; margin: 0; }
+#main_index #search_header { width: 100%; display: flex; justify-content: center; padding: 0; background: transparent; box-shadow: none; border: 0; }
+#main_index #search_view { width: 100%; max-width: var(--g-search-width); margin: 0; }
+#main_index .search_box { height: 48px; }
+#main_index .search_box #send_search svg { width: 24px; height: 24px; }
+#main_index .index-buttons { display: flex; gap: 11px; margin-top: 30px; justify-content: center; }
+.g-btn {
+  height: 38px; padding: 0 18px; border-radius: var(--g-radius-btn);
+  font: 500 14px/38px var(--g-font-display);
+  background: var(--g-btn-bg); color: var(--g-btn-text);
+  border: 1px solid var(--g-btn-border); cursor: pointer; transition: box-shadow .15s, border-color .15s;
+}
+.g-btn:hover { border-color: var(--g-btn-border-hover); box-shadow: 0 1px 1px rgba(0, 0, 0, .1); }
+
+/* =====================================================================
+   14. PREFERENCES — Google-settings look (cards · rows · chips · switches)
+   ===================================================================== */
+#main_preferences, main.page_with_header {
+  max-width: 880px; width: auto; margin: 0 auto; padding: 0 24px 96px;
+}
+.page_with_header > a.logo { display: inline-flex; align-items: center; margin-top: 24px; height: auto; }
+.page_with_header .logo .wordmark { font-size: 24px; }
+#main_preferences h1, main.page_with_header h1 {
+  font-family: var(--g-font-display); font-weight: 400; font-size: 28px; line-height: 1.2; margin: 20px 0 14px; color: var(--g-text);
+}
+
+/* tab bar */
+#main_preferences .tabs { gap: 0; border-bottom: 1px solid var(--g-border); }
+#main_preferences .tabs > label[role="tab"] {
+  padding: 12px 16px; font-size: 14px; color: var(--g-tab-inactive);
+  border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; cursor: pointer;
+  font-family: var(--g-font-body); font-weight: 500; background: transparent; text-transform: none;
+}
+#main_preferences .tabs > label[role="tab"]:hover { color: var(--g-text); }
+#main_preferences .tabs > input:checked + label[role="tab"] { color: var(--g-accent); border-bottom-color: var(--g-accent); }
+
+/* each tab panel becomes a settings card */
+#main_preferences section[role="tabpanel"] {
+  background: var(--g-bg-elevated); border: 1px solid var(--g-border); border-radius: 16px;
+  padding: 0 24px; margin-top: 22px; box-shadow: var(--g-shadow-card);
+}
+
+/* each setting = a row: title + description on the left, control on the right */
+/* legend is the fieldset's caption (not a real flex/grid item), so we lay rows
+   out with the control absolutely positioned on the right — robust everywhere */
+#main_preferences fieldset {
+  position: relative; display: block;
+  margin: 0; padding: 18px 320px 18px 0; border: 0; border-bottom: 1px solid var(--g-border);
+}
+#main_preferences section[role="tabpanel"] > fieldset:last-of-type { border-bottom: 0; }
+#main_preferences fieldset > legend {
+  display: block; float: none; width: auto; padding: 0; margin: 0;
+  font: 500 15px var(--g-font-body); color: var(--g-text);
+}
+#main_preferences fieldset > .description {
+  display: block; float: none !important; clear: both; font-size: 13px; line-height: 1.5;
+  color: var(--g-text-tertiary); margin: 3px 0 0; max-width: 100%;
+}
+#main_preferences fieldset > .value {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%); margin: 0; text-align: right;
+}
+
+/* selects — Material outlined */
+#main_preferences select {
+  appearance: none; -webkit-appearance: none; border-radius: 8px; border: 1px solid var(--g-border);
+  background-color: var(--g-bg); color: var(--g-text); min-width: 220px; max-width: 300px; height: 42px;
+  padding: 0 42px 0 14px !important; font-size: 14px; box-shadow: none; text-overflow: ellipsis;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+}
+:root.theme-dark #main_preferences select, :root.theme-black #main_preferences select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%239aa0a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+}
+#main_preferences select:hover { border-color: var(--g-text-tertiary); }
+
+/* default-categories chooser → full-width block with Material filter chips */
+#main_preferences fieldset:has(#categories_container) { display: block; padding: 20px 0; }
+#main_preferences fieldset:has(#categories_container) > legend { display: block; margin-bottom: 14px; }
+#main_preferences #categories { border: 0; overflow: visible; margin: 0; }
+#main_preferences #categories_container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-start; }
+#main_preferences #categories .category { margin: 0; }
+#main_preferences #categories .category label {
+  display: inline-flex; align-items: center; gap: 8px; height: auto; margin: 0;
+  padding: 9px 16px; cursor: pointer; outline: none;
+  font: 400 14px var(--g-font-body); color: var(--g-text);
+  background: transparent; border: 1px solid var(--g-border-home); border-radius: 999px;
+  padding: 9px 16px !important; height: auto !important; line-height: 1.2 !important;
+  transition: background .15s, border-color .15s, color .15s;
+}
+#main_preferences #categories .category label:hover { background: var(--g-surface); border-color: var(--g-text-tertiary); }
+#main_preferences #categories .category label svg { width: 18px; height: 18px; padding: 0; }
+#main_preferences #categories .category label .category_name { margin: 0; }
+#main_preferences #categories .category_checkbox input[type="checkbox"]:checked + label {
+  background: var(--g-chip-selected-bg); border-color: var(--g-accent); color: var(--g-accent); font-weight: 500;
+}
+#main_preferences #categories .category label:focus-visible { box-shadow: 0 0 0 2px var(--g-accent); }
+
+/* engine tables & nested tabs: full-width inside the card (control back in flow) */
+#main_preferences fieldset:has(table), #main_preferences fieldset:has(.tabs) { display: block; padding: 18px 0; }
+#main_preferences fieldset:has(table) > .value,
+#main_preferences fieldset:has(.tabs) > .value { position: static; transform: none; text-align: left; margin-top: 12px; }
+#main_preferences table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+/* on/off toggle: keep simple's switch (recoloured via tokens) */
+#main_preferences .checkbox-onoff, main.page_with_header .checkbox-onoff { transform: none; }
+
+/* action footer: Save (primary pill) + Reset/Back (outlined), no overlap */
+#main_preferences .small_font { margin: 26px 2px 16px; font-size: 13px; color: var(--g-text-tertiary); line-height: 1.5; }
+#main_preferences input[type="submit"] {
+  appearance: none; border: 0; cursor: pointer; height: 40px; padding: 0 26px; border-radius: 999px;
+  background: var(--g-accent); color: var(--g-accent-contrast); font: 500 14px var(--g-font-display);
+}
+#main_preferences input[type="submit"]:hover { box-shadow: var(--g-shadow-card); }
+#main_preferences .preferences_back {
+  float: none !important; display: inline-block; position: static; right: auto; left: auto; margin: 0 0 0 8px;
+  background: transparent !important; border: 0 !important; padding: 0 !important; box-shadow: none !important;
+}
+#main_preferences .preferences_back a {
+  display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border-radius: 999px;
+  border: 1px solid var(--g-border); color: var(--g-accent); background: transparent;
+  text-decoration: none; font: 500 14px var(--g-font-display);
+}
+#main_preferences .preferences_back a:hover { background: var(--g-surface); text-decoration: none; }
+
+/* =====================================================================
+   15. FOOTER
+   ===================================================================== */
+footer {
+  margin-top: 60px; background: var(--g-footer-bg); border-top: 1px solid var(--g-border);
+  color: var(--g-footer-text); font-size: 13px; padding: 0;
+}
+footer p { padding: 16px 27px; margin: 0; color: var(--g-footer-text); }
+footer a { color: var(--g-footer-text); }
+footer a:hover { color: var(--g-text-secondary); }
+#main_index footer { width: 100%; margin-top: auto; }
+
+/* =====================================================================
+   16. MOTION
+   ===================================================================== */
+@keyframes g-result-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+#urls article.result { animation: g-result-in .3s ease both; }
+#urls article.result:nth-child(1) { animation-delay: .02s; }
+#urls article.result:nth-child(2) { animation-delay: .06s; }
+#urls article.result:nth-child(3) { animation-delay: .10s; }
+#urls article.result:nth-child(4) { animation-delay: .14s; }
+#urls article.result:nth-child(5) { animation-delay: .18s; }
+@media (prefers-reduced-motion: reduce) { #urls article.result { animation: none; } }
+
+/* =====================================================================
+   17. RESPONSIVE
+   ===================================================================== */
+@media (max-width: 1180px) {
+  :root { --g-sidebar-width: 300px; --g-results-gap: 40px; }
+}
+@media (max-width: 980px) {
+  #main_results div#results,
+  .center-alignment-yes #main_results div#results {
+    grid-template:
+      "answers" min-content "corrections" min-content "sidebar" min-content
+      "urls" 1fr "pagination" min-content / minmax(0, 1fr);
+    column-gap: 0; max-width: 720px;
+  }
+  #main_results #sidebar { padding-top: 0; position: static; max-height: none; overflow: visible; }
+  #urls, #main_results #answers, #main_results #corrections { max-width: none; }
+  #main_preferences fieldset { grid-template-columns: 1fr; grid-template-areas: "legend" "control" "desc"; }
+  #main_preferences fieldset > .value { justify-self: start; }
+}
+@media (max-width: 560px) {
+  #main_index { padding-top: 16vh; }
+  #main_index .title .wordmark { font-size: 56px; }
+  #main_index .index-buttons { width: 100%; max-width: 320px; }
+  .g-btn { width: 100%; }
+  #links_on_top { gap: 14px; padding: 12px 14px; }
+  #main_results #categories_container { justify-content: flex-start; }
+}

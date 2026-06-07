@@ -1,0 +1,11 @@
+.idea
+.claude
+.remember
+*.log
+*.tmp
+tmp
+.vscode
+.DS_Store
+node_modules
+dist
+*.iml

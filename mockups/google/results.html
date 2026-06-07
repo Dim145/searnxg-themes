@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="no-js theme-auto center-alignment-no" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>intelligence artificielle — SearXNG (maquette thème Google)</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="mock.css">
+</head>
+<body class="results_endpoint">
+  <main id="main_results">
+    <nav id="links_on_top">
+      <a href="#" class="link_on_top_about">À propos</a>
+      <a href="preferences.html" class="link_on_top_preferences">Préférences</a>
+      <a href="#" class="signin">Connexion</a>
+    </nav>
+
+    <!-- search.html -->
+    <form id="search" method="GET" action="results.html" role="search">
+      <div id="search_header">
+        <a id="search_logo" href="index.html" title="Page d'accueil">
+          <span hidden>SearXNG</span>
+          <span class="wordmark" aria-label="SearXNG">
+            <span class="c1">S</span><span class="c2">e</span><span class="c3">a</span><span class="c4">r</span><span class="x">X</span><span class="c5">N</span><span class="c6">G</span>
+          </span>
+        </a>
+        <div id="search_view">
+          <div class="search_box">
+            <span class="leading-icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input id="q" name="q" type="text" autocomplete="off" value="intelligence artificielle">
+            <div class="trailing">
+              <button type="reset" id="clear_search" class="icon-btn" aria-label="effacer">
+                <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+              <button type="button" class="icon-btn mic" aria-label="Recherche vocale">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
+              </button>
+              <button type="button" class="icon-btn lens" aria-label="Recherche par image">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M3 9V5a2 2 0 0 1 2-2h4M21 9V5a2 2 0 0 0-2-2h-4M3 15v4a2 2 0 0 0 2 2h4M21 15v4a2 2 0 0 1-2 2h-4"/></svg>
+              </button>
+              <span class="divider"></span>
+              <button type="submit" id="send_search" class="icon-btn" aria-label="rechercher" style="color:var(--g-accent)">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="autocomplete hide_if_nojs"><ul></ul></div>
+        </div>
+
+        <!-- categories.html (tabs) -->
+        <div id="categories" class="search_categories">
+          <div id="categories_container">
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_general" name="category_general" checked>
+              <label for="checkbox_general" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <div class="category_name">Tout</div>
+              </label>
+            </div>
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_images" name="category_images">
+              <label for="checkbox_images" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <div class="category_name">Images</div>
+              </label>
+            </div>
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_videos" name="category_videos">
+              <label for="checkbox_videos" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                <div class="category_name">Vidéos</div>
+              </label>
+            </div>
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_news" name="category_news">
+              <label for="checkbox_news" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9h4"/><line x1="18" y1="14" x2="10" y2="14"/><line x1="15" y1="18" x2="10" y2="18"/><line x1="10" y1="6" x2="18" y2="6"/></svg>
+                <div class="category_name">Actualités</div>
+              </label>
+            </div>
+            <div class="category category_checkbox">
+              <input type="checkbox" id="checkbox_map" name="category_map">
+              <label for="checkbox_map" class="tooltips">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div class="category_name">Cartes</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- search_filters -->
+      <div class="search_filters">
+        <select class="language" id="language" name="language" aria-label="Langue">
+          <option>Toutes les langues</option><option selected>Français</option><option>English</option>
+        </select>
+        <select class="time_range" id="time_range" name="time_range" aria-label="Période">
+          <option selected>À tout moment</option><option>Dernier jour</option><option>Dernière semaine</option><option>Dernière année</option>
+        </select>
+        <select class="safesearch" id="safesearch" name="safesearch" aria-label="Filtre">
+          <option>Strict</option><option selected>Modéré</option><option>Aucun</option>
+        </select>
+      </div>
+      <input type="hidden" name="theme" value="google">
+    </form>
+
+    <!-- results.html grid -->
+    <div id="results">
+      <div id="urls" role="main">
+        <p class="results_meta">Environ 84&nbsp;200&nbsp;000 résultats · 0,38&nbsp;s · moteurs&nbsp;: google, brave, duckduckgo</p>
+
+        <article class="result result-default category-general">
+          <a href="#" class="url_header">
+            <div class="favicon" style="background:#3b5bdb"><span class="fav-letter">W</span></div>
+            <div class="url_wrapper">
+              <span class="url_o1"><span class="url_i1">fr.wikipedia.org</span></span>
+              <span class="url_o2"><span class="url_i2">https://fr.wikipedia.org › wiki › Intelligence_artificielle</span></span>
+            </div>
+          </a>
+          <h3><a href="#">Intelligence artificielle — Wikipédia</a></h3>
+          <p class="content">L'intelligence artificielle (IA) est un ensemble de théories et de techniques visant à réaliser des machines capables de simuler l'intelligence humaine. Elle regroupe l'apprentissage automatique, les réseaux de neurones et le traitement du langage naturel.</p>
+          <div class="engines"><span>google</span><span>brave</span><a href="#" class="cache_link">en cache</a></div>
+          <div class="break"></div>
+        </article>
+
+        <article class="result result-default category-general">
+          <a href="#" class="url_header">
+            <div class="favicon" style="background:#e8710a"><span class="fav-letter">C</span></div>
+            <div class="url_wrapper">
+              <span class="url_o1"><span class="url_i1">www.cnil.fr</span></span>
+              <span class="url_o2"><span class="url_i2">https://www.cnil.fr › intelligence-artificielle</span></span>
+            </div>
+          </a>
+          <h3><a href="#">Intelligence artificielle (IA) | CNIL</a></h3>
+          <p class="content">Qu'est-ce que l'intelligence artificielle&nbsp;? Quels sont les enjeux pour la protection des données personnelles&nbsp;? La CNIL accompagne les professionnels dans leur mise en conformité et éclaire les particuliers sur leurs droits.</p>
+          <div class="engines"><span>google</span><span>qwant</span><a href="#" class="cache_link">en cache</a></div>
+          <div class="break"></div>
+        </article>
+
+        <article class="result result-default category-general">
+          <a href="#" class="url_header">
+            <div class="favicon" style="background:#1e8e3e"><span class="fav-letter">I</span></div>
+            <div class="url_wrapper">
+              <span class="url_o1"><span class="url_i1">www.inria.fr</span></span>
+              <span class="url_o2"><span class="url_i2">https://www.inria.fr › dossiers › intelligence-artificielle</span></span>
+            </div>
+          </a>
+          <h3><a href="#">Intelligence artificielle : les défis actuels et l'action d'Inria</a></h3>
+          <p class="content">Apprentissage profond, IA de confiance, IA frugale&nbsp;: découvrez les recherches menées par Inria et les grands enjeux scientifiques, éthiques et sociétaux de l'intelligence artificielle aujourd'hui.</p>
+          <div class="engines"><span>brave</span><span>duckduckgo</span><a href="#" class="cache_link">en cache</a></div>
+          <div class="break"></div>
+        </article>
+
+        <article class="result result-default category-general">
+          <a href="#" class="url_header">
+            <div class="favicon" style="background:#c5221f"><span class="fav-letter">Y</span></div>
+            <div class="url_wrapper">
+              <span class="url_o1"><span class="url_i1">www.youtube.com</span></span>
+              <span class="url_o2"><span class="url_i2">https://www.youtube.com › watch</span></span>
+            </div>
+          </a>
+          <h3><a href="#">Comprendre l'intelligence artificielle en 10 minutes</a></h3>
+          <p class="content">Une introduction claire et accessible aux concepts fondamentaux de l'IA&nbsp;: machine learning, deep learning, modèles de langage. Idéal pour débuter sans prérequis technique.</p>
+          <div class="engines"><span>google</span><a href="#" class="cache_link">en cache</a></div>
+          <div class="break"></div>
+        </article>
+
+        <article class="result result-default category-general">
+          <a href="#" class="url_header">
+            <div class="favicon" style="background:#6741d9"><span class="fav-letter">L</span></div>
+            <div class="url_wrapper">
+              <span class="url_o1"><span class="url_i1">www.lemonde.fr</span></span>
+              <span class="url_o2"><span class="url_i2">https://www.lemonde.fr › intelligence-artificielle</span></span>
+            </div>
+          </a>
+          <h3><a href="#">Intelligence artificielle : toute l'actualité</a></h3>
+          <p class="content">Suivez l'actualité de l'intelligence artificielle&nbsp;: avancées technologiques, régulation européenne (AI Act), impacts économiques et débats éthiques, décryptés par la rédaction.</p>
+          <div class="engines"><span>brave</span><span>google</span><a href="#" class="cache_link">en cache</a></div>
+          <div class="break"></div>
+        </article>
+
+        <article class="result result-default category-general">
+          <a href="#" class="url_header">
+            <div class="favicon" style="background:#0b7285"><span class="fav-letter">L</span></div>
+            <div class="url_wrapper">
+              <span class="url_o1"><span class="url_i1">www.larousse.fr</span></span>
+              <span class="url_o2"><span class="url_i2">https://www.larousse.fr › encyclopedie › intelligence-artificielle</span></span>
+            </div>
+          </a>
+          <h3><a href="#">Définition : intelligence artificielle - Larousse</a></h3>
+          <p class="content">Ensemble de théories et de techniques mises en œuvre en vue de réaliser des machines capables de simuler l'intelligence humaine. Origine, histoire et applications de l'IA.</p>
+          <div class="engines"><span>duckduckgo</span><a href="#" class="cache_link">en cache</a></div>
+          <div class="break"></div>
+        </article>
+      </div>
+
+      <!-- sidebar: infoboxes (knowledge-panel style) + suggestions -->
+      <div id="sidebar">
+        <div id="infoboxes">
+          <aside class="infobox">
+            <h2 class="title">Intelligence artificielle</h2>
+            <p>Champ interdisciplinaire de l'informatique qui développe des systèmes capables d'effectuer des tâches nécessitant habituellement l'intelligence humaine&nbsp;: perception, raisonnement, apprentissage et prise de décision.</p>
+            <table class="attributes">
+              <tr><td>Sous-domaines</td><td>Apprentissage automatique, vision par ordinateur, NLP</td></tr>
+              <tr><td>Pionniers</td><td>Alan Turing, John McCarthy, Marvin Minsky</td></tr>
+              <tr><td>Acte fondateur</td><td>Conférence de Dartmouth (1956)</td></tr>
+            </table>
+            <ul class="urls">
+              <li class="url"><a href="#">Wikipédia</a></li>
+              <li class="url"><a href="#">Wikidata</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <div id="suggestions">
+          <details open class="sidebar-collapsible">
+            <summary class="title">Recherches associées</summary>
+            <ul class="wrapper">
+              <li><input type="submit" class="suggestion" value="intelligence artificielle générative"></li>
+              <li><input type="submit" class="suggestion" value="IA et emploi"></li>
+              <li><input type="submit" class="suggestion" value="histoire de l'intelligence artificielle"></li>
+              <li><input type="submit" class="suggestion" value="AI Act union européenne"></li>
+              <li><input type="submit" class="suggestion" value="réseaux de neurones expliqués"></li>
+            </ul>
+          </details>
+        </div>
+      </div>
+
+      <!-- pagination -->
+      <nav id="pagination" role="navigation">
+        <div class="numbered_pagination">
+          <form class="previous_page"><div class="left"><button type="submit"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Précédent</button></div></form>
+          <form class="page_number"><input role="link" class="page_number_current" type="button" value="1"></form>
+          <form class="page_number"><input role="link" class="page_number" type="submit" value="2"></form>
+          <form class="page_number"><input role="link" class="page_number" type="submit" value="3"></form>
+          <form class="page_number"><input role="link" class="page_number" type="submit" value="4"></form>
+          <form class="next_page"><div class="right"><button type="submit">Suivant <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button></div></form>
+        </div>
+      </nav>
+    </div>
+
+    <footer>
+      <div class="footer-row region">France · Recherche respectueuse de la vie privée</div>
+      <div class="footer-row">
+        <nav><a href="#">À propos</a><a href="#">Code source</a><a href="#">Statistiques moteurs</a></nav>
+        <nav><a href="#">Confidentialité</a><a href="preferences.html">Préférences</a></nav>
+      </div>
+    </footer>
+  </main>
+
+  <div class="mock-theme-switch" aria-label="Aperçu du thème (maquette)">
+    <button data-theme-btn="light">Clair</button>
+    <button data-theme-btn="dark">Sombre</button>
+    <button data-theme-btn="auto">Auto</button>
+  </div>
+  <script src="demo.js"></script>
+</body>
+</html>

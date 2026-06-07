@@ -15,9 +15,22 @@
 /* =====================================================================
    1. GOOGLE PALETTE TOKENS (--g-*)  — light / dark / auto
    ===================================================================== */
+/* self-hosted Poppins (latin subset) for the multicolour wordmark — never
+   fetched from fonts.google.com (privacy). Body & result titles stay Arial. */
+@font-face {
+  font-family: "Poppins"; font-style: normal; font-weight: 600; font-display: swap;
+  src: url("fonts/poppins-600.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2191, U+2193, U+2212;
+}
+@font-face {
+  font-family: "Poppins"; font-style: normal; font-weight: 700; font-display: swap;
+  src: url("fonts/poppins-700.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2191, U+2193, U+2212;
+}
+
 :root {
   --g-font-body: arial, "Helvetica Neue", helvetica, sans-serif;
-  --g-font-display: "Google Sans", "Product Sans", "Poppins", arial, sans-serif;
+  --g-font-display: "Google Sans", "Product Sans", arial, sans-serif;
 
   --g-bg: #ffffff;
   --g-bg-elevated: #ffffff;
@@ -247,7 +260,7 @@ body, input, select, button, textarea, .content, article.result h3 a {
 svg.icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2;
   stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; flex: 0 0 auto; }
 
-.wordmark { font-family: var(--g-font-display); font-weight: 600; letter-spacing: -.5px;
+.wordmark { font-family: "Poppins", "Product Sans", arial, sans-serif; font-weight: 600; letter-spacing: -.5px;
   line-height: 1; user-select: none; white-space: nowrap; }
 .wordmark .c1 { color: var(--g-brand-blue); }
 .wordmark .c2 { color: var(--g-brand-red); }
@@ -324,13 +337,13 @@ html { overflow-x: clip; }
 
 /* the magnifier IS the real submit button — placed on the left (Google) */
 .search_box #send_search {
-  order: 0; width: 40px; height: 40px; min-width: 40px; flex: 0 0 auto;
+  order: 0; width: 44px; height: 44px; min-width: 44px; flex: 0 0 auto;
   border: 0; background: transparent; border-radius: 50%; padding: 0;
   display: grid; place-items: center; color: var(--g-text-tertiary); box-shadow: none; margin: 0;
 }
 .search_box #send_search:hover { background: var(--g-surface-2); color: var(--g-text-secondary); }
 .search_box #clear_search {
-  order: 2; width: 40px; height: 40px; min-width: 40px; flex: 0 0 auto;
+  order: 2; width: 44px; height: 44px; min-width: 44px; flex: 0 0 auto;
   border: 0; background: transparent; border-radius: 50%; padding: 0;
   display: grid; place-items: center; color: var(--g-text-tertiary); box-shadow: none; margin: 0;
 }
@@ -401,8 +414,8 @@ html { overflow-x: clip; }
 }
 #main_results .search_filters select {
   appearance: none; -webkit-appearance: none; font-size: 13px; color: var(--g-text-secondary);
-  background-color: var(--g-surface); border: 1px solid var(--g-border); border-radius: 20px;
-  height: 40px; width: auto; max-width: none; box-shadow: none; line-height: 38px;
+  background-color: var(--g-surface); border: 1px solid var(--g-border); border-radius: 22px;
+  height: 44px; width: auto; max-width: none; box-shadow: none; line-height: 42px;
   padding: 0 38px 0 16px !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 12px center; background-size: 16px;
@@ -489,7 +502,11 @@ html { overflow-x: clip; }
 #urls article.result .engines span {
   background: var(--g-surface); border-radius: 10px; padding: 1px 8px; line-height: 18px; text-transform: lowercase;
 }
-#urls article.result .engines a.cache_link { color: var(--g-text-tertiary); }
+#urls article.result .engines a.cache_link {
+  color: var(--g-text-tertiary); display: inline-flex; align-items: center;
+  padding: 8px 10px; margin: -8px 0; border-radius: 999px; line-height: 1; text-decoration: none;
+}
+#urls article.result .engines a.cache_link:hover { background: var(--g-surface-2); color: var(--g-text-secondary); }
 
 /* =====================================================================
    10. IMAGE RESULTS — legible uniform grid with captions

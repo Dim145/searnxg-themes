@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="index-buttons">
-    <button type="submit" class="g-btn">{{ _('Search') }}</button>
+    <button type="submit" class="g-btn">{{ _('search') | capitalize }}</button>
   </div>
   {% for category in selected_categories %}
   <input type="hidden" name="category_{{ category }}" value="1" >

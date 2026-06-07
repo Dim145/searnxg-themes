@@ -10,6 +10,7 @@ server:
 
 ui:
   default_theme: google
+  default_locale: "fr"   # consistent French UI (the theme itself is locale-driven via gettext)
   infinite_scroll: true
   search_on_category_select: false
 

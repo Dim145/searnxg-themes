@@ -89,9 +89,10 @@ Monte le thème dans l'image officielle `searxng/searxng` (aucune reconstruction
 - **Bleu des titres** : `--g-link` (`#1a0dab` par défaut ; `#1558d6` pour un bleu plus vif).
 - **Wordmark** : couleurs par lettre dans `.wordmark .c1…`; le markup est dans
   `templates/index.html`, `templates/search.html`, `templates/page_with_header.html`.
-- **Police display** : `--g-font-display` préfère une police géométrique si l'admin en
-  auto-héberge une (Poppins…), sinon Arial. *Ne jamais charger depuis fonts.google.com*
-  sur une instance (vie privée).
+  Police : **Poppins auto-hébergée** (`static/fonts/poppins-{600,700}.woff2`, sous-ensemble
+  latin) — *jamais chargée depuis fonts.google.com* (vie privée). Pour changer, remplacez
+  les woff2 et le `@font-face` en tête de `src/google.css`.
+- **Corps & titres** : Arial (le rendu réel de Google) via `--g-font-body` / `--g-font-display`.
 
 ## Compatibilité
 

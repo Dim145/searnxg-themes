@@ -52,7 +52,7 @@ searnxg-themes/
 
 ## Installer dans votre SearXNG
 
-> Remplacez `OWNER/REPO` par le dépôt (ex. `ddubois/searnxg-themes`). Les commandes
+> Dépôt : **`Dim145/searnxg-themes`** (déjà câblé dans les scripts). Les commandes
 > récupèrent la dernière *release* : un ZIP prêt à déposer, construit par la CI.
 
 **Docker (searxng-docker) — persistant, image officielle conservée** *(recommandé)*
@@ -60,9 +60,9 @@ searnxg-themes/
 Dans le dossier de votre `docker-compose.yml` :
 
 ```bash
-curl -fsSLO https://raw.githubusercontent.com/OWNER/REPO/main/docker/docker-compose.override.yml
-curl -fsSLO https://raw.githubusercontent.com/OWNER/REPO/main/docker/fetch-theme.sh && chmod +x fetch-theme.sh
-SEARXNG_GOOGLE_REPO=OWNER/REPO ./fetch-theme.sh        # → ./searxng-google/
+curl -fsSLO https://raw.githubusercontent.com/Dim145/searnxg-themes/main/docker/docker-compose.override.yml
+curl -fsSLO https://raw.githubusercontent.com/Dim145/searnxg-themes/main/docker/fetch-theme.sh && chmod +x fetch-theme.sh
+./fetch-theme.sh                                       # → ./searxng-google/
 #   settings.yml :  ui: { default_theme: google }
 docker compose up -d
 ```
@@ -72,10 +72,10 @@ Détails et mise à jour : [docker/README.md](docker/README.md).
 **Installation native / source — une commande**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/OWNER/REPO/main/install/install.sh \
-  | bash -s -- --repo OWNER/REPO --target /usr/local/searxng/searxng-src
+curl -fsSL https://raw.githubusercontent.com/Dim145/searnxg-themes/main/install/install.sh \
+  | bash -s -- --target /usr/local/searxng/searxng-src
 # essai rapide dans un conteneur lancé (non persistant) :
-#   … | bash -s -- --repo OWNER/REPO --docker searxng   (puis `docker restart searxng`)
+#   … | bash -s -- --docker searxng   (puis `docker restart searxng`)
 ```
 
 **Manuel (ZIP de release)** — téléchargez `searxng-google-theme.zip` depuis *Releases* :
@@ -97,16 +97,14 @@ les détails et la reconstruction du CSS.
 
 ## Publier une release (mainteneur)
 
-Le dépôt est prêt pour GitHub (workflows + packaging) mais **sans remote**. Après l'avoir poussé :
+Le slug `Dim145/searnxg-themes` est déjà câblé partout (scripts + docs ; les workflows
+utilisent `github.repository`). Pour un **fork**, remplace-le ou passe `--repo OWNER/REPO`.
 
-1. **Remplacez `OWNER/REPO`** dans `install/install.sh`, `docker/fetch-theme.sh`,
-   `docker/README.md` et ce README. *(Les workflows utilisent `github.repository`
-   automatiquement — rien à y changer.)*
-2. **Taguez** pour déclencher la CI de release (build du ZIP + création de la *Release*) :
+1. **Taguez** pour déclencher la CI de release (build du ZIP + création de la *Release*) :
    ```bash
    git tag google-v2026.06.07 && git push origin google-v2026.06.07
    ```
-3. Le workflow `ci.yml` valide chaque push : build du ZIP, démarrage de SearXNG avec le
+2. Le workflow `ci.yml` valide chaque push : build du ZIP, démarrage de SearXNG avec le
    thème monté, et vérification que les pages rendent sans erreur de template.
 
 Construire le ZIP localement : `./install/package.sh google` → `dist/searxng-google-theme.zip`.

@@ -4,12 +4,13 @@
 # docker-compose.override.yml, verifying the checksum. Then:
 #   docker compose up -d
 #
-#   SEARXNG_GOOGLE_REPO=OWNER/REPO ./fetch-theme.sh [theme] [ref]
+#   ./fetch-theme.sh [theme] [ref]
 #       theme   default: google
 #       ref     default: latest   (or a release tag)
+#   Fork? override the source: SEARXNG_GOOGLE_REPO=OWNER/REPO ./fetch-theme.sh
 # =====================================================================
 set -euo pipefail
-REPO_SLUG="${SEARXNG_GOOGLE_REPO:-OWNER/REPO}"
+REPO_SLUG="${SEARXNG_GOOGLE_REPO:-Dim145/searnxg-themes}"
 THEME="${1:-google}"
 REF="${2:-latest}"
 

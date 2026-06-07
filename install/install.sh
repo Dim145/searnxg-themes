@@ -4,23 +4,24 @@
 #
 # ── Remote (no checkout needed; fetches the latest GitHub release) ────
 #   # native / source install:
-#   curl -fsSL https://raw.githubusercontent.com/OWNER/REPO/main/install/install.sh \
-#     | bash -s -- --repo OWNER/REPO --target /usr/local/searxng/searxng-src
+#   curl -fsSL https://raw.githubusercontent.com/Dim145/searnxg-themes/main/install/install.sh \
+#     | bash -s -- --target /usr/local/searxng/searxng-src
 #
 #   # into a running container (quick try — lost when the container is
 #   # recreated; use the docker-compose overlay for a persistent setup):
-#   curl -fsSL .../install.sh | bash -s -- --repo OWNER/REPO --docker searxng
+#   curl -fsSL https://raw.githubusercontent.com/Dim145/searnxg-themes/main/install/install.sh \
+#     | bash -s -- --docker searxng        # then: docker restart searxng
 #
 # ── From a local checkout (dev) ──────────────────────────────────────
 #   ./install/install.sh --target /path/to/searxng [--link]
 #   ./install/install.sh /path/to/searxng              # positional = --target
 #
-# Set the default repo once via env to skip --repo:
-#   export SEARXNG_GOOGLE_REPO=OWNER/REPO
+# Fork? point at your own release source with --repo OWNER/REPO
+# (or env SEARXNG_GOOGLE_REPO). Defaults to Dim145/searnxg-themes.
 # =====================================================================
 set -euo pipefail
 
-REPO_SLUG="${SEARXNG_GOOGLE_REPO:-OWNER/REPO}"
+REPO_SLUG="${SEARXNG_GOOGLE_REPO:-Dim145/searnxg-themes}"
 THEME=google
 TARGET=""
 CONTAINER=""

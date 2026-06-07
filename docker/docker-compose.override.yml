@@ -6,7 +6,7 @@
 # Steps:
 #   1. cp docker-compose.override.yml  <your searxng-docker dir>/
 #   2. cp fetch-theme.sh               <your searxng-docker dir>/
-#   3. SEARXNG_GOOGLE_REPO=OWNER/REPO ./fetch-theme.sh   # → ./searxng-google/
+#   3. ./fetch-theme.sh                                  # → ./searxng-google/
 #   4. add  ui: { default_theme: google }  to your searxng/settings.yml
 #   5. docker compose up -d
 #

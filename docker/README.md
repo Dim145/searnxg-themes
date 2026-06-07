@@ -4,16 +4,14 @@ For a [searxng-docker](https://github.com/searxng/searxng-docker) setup, install
 theme **without rebuilding any image** — bind-mount it into the official
 `searxng/searxng` container via a compose override.
 
-> Replace `OWNER/REPO` with this repository's slug (e.g. `ddubois/searnxg-themes`).
-
 ```bash
 # in your searxng-docker directory (next to docker-compose.yml):
-curl -fsSLO https://raw.githubusercontent.com/OWNER/REPO/main/docker/docker-compose.override.yml
-curl -fsSLO https://raw.githubusercontent.com/OWNER/REPO/main/docker/fetch-theme.sh
+curl -fsSLO https://raw.githubusercontent.com/Dim145/searnxg-themes/main/docker/docker-compose.override.yml
+curl -fsSLO https://raw.githubusercontent.com/Dim145/searnxg-themes/main/docker/fetch-theme.sh
 chmod +x fetch-theme.sh
 
 # download the theme into ./searxng-google/
-SEARXNG_GOOGLE_REPO=OWNER/REPO ./fetch-theme.sh
+./fetch-theme.sh
 
 # enable it, then start
 #   searxng/settings.yml:
@@ -38,7 +36,7 @@ services:
 **Update later:**
 
 ```bash
-SEARXNG_GOOGLE_REPO=OWNER/REPO ./fetch-theme.sh   # re-download
+./fetch-theme.sh   # re-download
 docker compose restart searxng
 ```
 

@@ -1,0 +1,57 @@
+name: ci
+
+# Builds the theme archive and smoke-tests it against the official SearXNG
+# image: boots a container with the theme bind-mounted and asserts the main
+# pages render with no template error. This is the early-warning for the
+# theme drifting out of sync with a newer SearXNG (forked simple templates).
+
+on:
+  push:
+    paths: ["themes/**", "install/**", "docker/**", "scripts/**", ".github/workflows/**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zip
+        run: sudo apt-get update -qq && sudo apt-get install -y zip >/dev/null
+
+      - name: Build & package
+        run: |
+          ./install/package.sh google
+          unzip -q dist/searxng-google-theme.zip -d /tmp/pkg
+          test -f /tmp/pkg/searxng-google/templates/base.html
+          test -f /tmp/pkg/searxng-google/static/sxng-ltr.min.css
+
+      - name: Boot SearXNG with the theme
+        run: |
+          docker run -d --name sx -p 8888:8080 \
+            -v /tmp/pkg/searxng-google/templates:/usr/local/searxng/searx/templates/google:ro \
+            -v /tmp/pkg/searxng-google/static:/usr/local/searxng/searx/static/themes/google:ro \
+            -v "$PWD/scripts/searxng-config:/etc/searxng" \
+            searxng/searxng:latest
+          for i in $(seq 1 40); do
+            curl -fsS "http://localhost:8888/" >/dev/null 2>&1 && break
+            sleep 2
+          done
+
+      - name: Smoke-test pages render with the google theme
+        run: |
+          fail=0
+          for path in "/" "/search?q=test&theme=google" "/preferences?theme=google"; do
+            code=$(curl -s -o /tmp/body -w "%{http_code}" "http://localhost:8888${path}")
+            echo "GET ${path} -> ${code}"
+            if [ "$code" != "200" ]; then echo "::error::${path} returned ${code}"; fail=1; fi
+          done
+          # the google wordmark markup must be present (theme actually applied)
+          curl -s "http://localhost:8888/?theme=google" | grep -q 'class="wordmark"' \
+            || { echo "::error::google theme markup missing"; fail=1; }
+          if docker logs sx 2>&1 | grep -iE "TemplateError|TemplateNotFound|jinja2\.exceptions|Traceback"; then
+            echo "::error::template error in SearXNG logs"; fail=1
+          fi
+          docker rm -f sx >/dev/null 2>&1 || true
+          exit $fail

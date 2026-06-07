@@ -27,10 +27,20 @@ searnxg-themes/
 │   ├── google-ui-spec.md       ← spec visuelle de l'UI Google (couleurs, tailles, clair/sombre)
 │   └── searxng-simple-spec.md  ← architecture du thème `simple` (templates, tokens, couplages)
 ├── install/
-│   └── install.sh         ← installe un thème dans un checkout SearXNG
-└── scripts/
-    ├── docker-test.sh     ← lance SearXNG + thème via Docker (test rapide)
-    └── searxng-config/    ← settings.yml de test
+│   ├── install.sh         ← installe un thème (local OU télécharge la release ; --target/--docker)
+│   └── package.sh         ← construit le ZIP de release (dist/searxng-<thème>-theme.zip)
+├── docker/
+│   ├── docker-compose.override.yml  ← overlay bind-mount pour searxng-docker (persistant)
+│   ├── fetch-theme.sh     ← télécharge la release dans ./searxng-google/
+│   └── README.md
+├── .github/workflows/
+│   ├── release.yml        ← tag → build ZIP + crée la Release GitHub
+│   └── ci.yml             ← push/PR → build + smoke-test (boot SearXNG, rendu OK)
+├── scripts/
+│   ├── docker-test.sh     ← lance SearXNG + thème via Docker (test rapide)
+│   └── searxng-config/    ← settings.yml de test
+├── LICENSE                ← AGPL-3.0-or-later
+└── NOTICE                 ← attribution SearXNG + marques
 ```
 
 ## Démarrage rapide (Docker)
@@ -42,13 +52,64 @@ searnxg-themes/
 
 ## Installer dans votre SearXNG
 
+> Remplacez `OWNER/REPO` par le dépôt (ex. `ddubois/searnxg-themes`). Les commandes
+> récupèrent la dernière *release* : un ZIP prêt à déposer, construit par la CI.
+
+**Docker (searxng-docker) — persistant, image officielle conservée** *(recommandé)*
+
+Dans le dossier de votre `docker-compose.yml` :
+
 ```bash
-./install/install.sh /chemin/vers/searxng
-# puis dans settings.yml :  ui: { default_theme: google }
+curl -fsSLO https://raw.githubusercontent.com/OWNER/REPO/main/docker/docker-compose.override.yml
+curl -fsSLO https://raw.githubusercontent.com/OWNER/REPO/main/docker/fetch-theme.sh && chmod +x fetch-theme.sh
+SEARXNG_GOOGLE_REPO=OWNER/REPO ./fetch-theme.sh        # → ./searxng-google/
+#   settings.yml :  ui: { default_theme: google }
+docker compose up -d
 ```
 
-Voir [themes/google/README.md](themes/google/README.md) pour les détails, la personnalisation
-et la reconstruction du CSS (`themes/google/build.sh`).
+Détails et mise à jour : [docker/README.md](docker/README.md).
+
+**Installation native / source — une commande**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/OWNER/REPO/main/install/install.sh \
+  | bash -s -- --repo OWNER/REPO --target /usr/local/searxng/searxng-src
+# essai rapide dans un conteneur lancé (non persistant) :
+#   … | bash -s -- --repo OWNER/REPO --docker searxng   (puis `docker restart searxng`)
+```
+
+**Manuel (ZIP de release)** — téléchargez `searxng-google-theme.zip` depuis *Releases* :
+
+```bash
+unzip searxng-google-theme.zip
+cp -r searxng-google/templates  /chemin/searxng/searx/templates/google
+cp -r searxng-google/static     /chemin/searxng/searx/static/themes/google
+```
+
+Dans tous les cas : `ui.default_theme: google` dans `settings.yml` (ou choisi par
+utilisateur dans *Préférences → interface → thème*), puis redémarrez SearXNG. Gardez
+le thème `simple` installé. Voir [themes/google/README.md](themes/google/README.md) pour
+les détails et la reconstruction du CSS.
+
+> **Compatibilité** : le thème forke les templates `simple`, il est donc lié à une
+> version de SearXNG. Chaque release indique la version testée ; sur un SearXNG bien
+> plus récent, prenez une release plus récente (ou ouvrez une issue).
+
+## Publier une release (mainteneur)
+
+Le dépôt est prêt pour GitHub (workflows + packaging) mais **sans remote**. Après l'avoir poussé :
+
+1. **Remplacez `OWNER/REPO`** dans `install/install.sh`, `docker/fetch-theme.sh`,
+   `docker/README.md` et ce README. *(Les workflows utilisent `github.repository`
+   automatiquement — rien à y changer.)*
+2. **Taguez** pour déclencher la CI de release (build du ZIP + création de la *Release*) :
+   ```bash
+   git tag google-v2026.06.07 && git push origin google-v2026.06.07
+   ```
+3. Le workflow `ci.yml` valide chaque push : build du ZIP, démarrage de SearXNG avec le
+   thème monté, et vérification que les pages rendent sans erreur de template.
+
+Construire le ZIP localement : `./install/package.sh google` → `dist/searxng-google-theme.zip`.
 
 ## Aperçu sans SearXNG (maquettes)
 

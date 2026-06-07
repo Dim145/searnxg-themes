@@ -44,16 +44,22 @@ préférences) sont **remises en forme** pour coller à Google.
 
 ## Installation
 
-### Option A — script
+Pour **installer sur une instance** (one-liner `curl … | bash`, overlay
+`docker-compose` persistant, ou ZIP de release), voir *Installer dans votre SearXNG*
+dans le [README racine](../../README.md). Ci-dessous : l'installation **depuis ce dépôt** (dev).
+
+### Depuis un checkout local
 
 ```bash
-# copie
-../../install/install.sh /chemin/vers/searxng
-# ou lien symbolique (dev, édition à chaud)
-../../install/install.sh /chemin/vers/searxng --link
+# copie dans une install SearXNG (dossier contenant searx/templates/simple)
+./install/install.sh --target /chemin/vers/searxng
+# lien symbolique (édition à chaud pendant le dev)
+./install/install.sh --target /chemin/vers/searxng --link
+# désinstaller
+./install/install.sh --target /chemin/vers/searxng --uninstall
 ```
 
-### Option B — manuel
+Ou manuellement :
 
 ```bash
 cp -r themes/google/templates  /chemin/vers/searxng/searx/templates/google
@@ -73,9 +79,7 @@ ui:
 > Gardez le thème `simple` installé (SearXNG le fournit toujours) : `google` réutilise
 > quelques assets partagés en repli.
 
-### Option C — Docker (test rapide)
-
-Depuis la racine du dépôt :
+### Test rapide en Docker
 
 ```bash
 ./scripts/docker-test.sh up      # http://localhost:8888
@@ -83,6 +87,12 @@ Depuis la racine du dépôt :
 ```
 
 Monte le thème dans l'image officielle `searxng/searxng` (aucune reconstruction d'image).
+
+### Construire le ZIP de release
+
+```bash
+./install/package.sh google      # → dist/searxng-google-theme.zip (+ .sha256)
+```
 
 ## Personnalisation
 

@@ -1,0 +1,27 @@
+searnxg-themes — themes for the SearXNG metasearch engine
+Copyright (C) 2026 the searnxg-themes contributors
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version. See the LICENSE file for the full text.
+
+----------------------------------------------------------------------
+Attribution
+----------------------------------------------------------------------
+These themes are derivative works of SearXNG (https://github.com/searxng/searxng),
+which is licensed under AGPL-3.0-or-later and is Copyright (C) the SearXNG
+contributors. In particular, the "google" theme:
+
+  • forks the Jinja templates of SearXNG's bundled "simple" theme
+    (themes/google/templates/);
+  • vendors simple's compiled base stylesheet (themes/google/src/base-*.css)
+    and reuses its bundled JavaScript and image assets (themes/google/static/);
+
+on top of which it layers a hand-authored Google-look override
+(themes/google/src/google.css) and a small enhancement script
+(themes/google/static/google-lightbox.js).
+
+"Google", "Google Search" and related marks are trademarks of Google LLC. This
+project is an independent, unaffiliated visual theme; it ships NO Google logos
+or other trademarked assets and is not endorsed by Google.

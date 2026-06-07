@@ -1,0 +1,24 @@
+# =====================================================================
+# Persistent install of the "google" theme for a searxng-docker setup,
+# WITHOUT building a custom image. Compose merges this file automatically
+# when it sits next to your docker-compose.yml as docker-compose.override.yml.
+#
+# Steps:
+#   1. cp docker-compose.override.yml  <your searxng-docker dir>/
+#   2. cp fetch-theme.sh               <your searxng-docker dir>/
+#   3. SEARXNG_GOOGLE_REPO=OWNER/REPO ./fetch-theme.sh   # → ./searxng-google/
+#   4. add  ui: { default_theme: google }  to your searxng/settings.yml
+#   5. docker compose up -d
+#
+# Notes:
+#   • The service key below ("searxng") must match the one in your
+#     docker-compose.yml — searxng-docker calls it "searxng".
+#   • `volumes:` is merged additively, so your existing settings.yml /
+#     valkey mounts are preserved.
+#   • Re-run fetch-theme.sh + `docker compose restart searxng` to update.
+# =====================================================================
+services:
+  searxng:
+    volumes:
+      - ./searxng-google/templates:/usr/local/searxng/searx/templates/google:ro
+      - ./searxng-google/static:/usr/local/searxng/searx/static/themes/google:ro

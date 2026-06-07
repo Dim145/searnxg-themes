@@ -560,12 +560,19 @@ html { overflow-x: clip; }
    The JS toggles #results.image-detail-open + article[data-vim-selected];
    simple's right-panel positioning relies on .ltr-* mixins that don't apply
    cleanly under this theme, so we fully own a centered fullscreen overlay. */
+/* CRITICAL: the .detail overlay below is position:fixed to fill the viewport, but
+   it lives INSIDE its image cell. Our g-result-in entrance animation animates
+   `transform` on every article.result, and an element with a transform (animated
+   or not) becomes the containing block for fixed descendants — which re-anchored
+   the "fixed" lightbox to the ~200px thumbnail cell instead of the screen. Image
+   cells don't need the entrance animation, so drop it (and any transform) here. */
+#main_results #results.only_template_images article.result-images { animation: none; transform: none; }
 #main_results #results.image-detail-open.only_template_images { width: auto !important; max-width: 1500px; }
 #main_results #results.image-detail-open article.result-images[data-vim-selected] .detail {
   display: flex !important; flex-direction: column; align-items: center; justify-content: center;
   position: fixed; inset: 0; top: 0 !important; right: 0 !important; bottom: 0 !important; left: 0 !important;
   width: auto; height: auto; z-index: 3000; gap: 18px;
-  padding: 64px 24px 28px; background: rgb(0 0 0 / 92%); overflow: auto;
+  padding: 64px 24px 28px; background: rgb(0 0 0 / 96%); overflow: auto;
 }
 #results.image-detail-open article.result-images[data-vim-selected] .detail a.result-images-source {
   display: flex; align-items: center; justify-content: center; flex: 0 1 auto; max-width: 92vw; border: 0;

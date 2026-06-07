@@ -463,6 +463,10 @@ html { overflow-x: clip; }
 }
 #answers .title { font-family: var(--g-font-display); font-weight: 500; font-size: 16px; margin: 0 0 8px; color: var(--g-text); }
 #answers .answer { font-size: 15px; line-height: 1.6; color: var(--g-text); }
+/* simple sets overflow-wrap:anywhere on the answer text, which lets its track
+   collapse to 1 character if it's ever placed in a narrow column. Break on word
+   boundaries instead so the card never devolves into a vertical strip of letters. */
+#main_results #answers .answer, #main_results #answers .answer span { overflow-wrap: break-word; word-break: normal; }
 #answers a.answer-url, #answers .answer-url { color: var(--g-accent); font-size: 13px; }
 #main_results #corrections { margin: 0 0 18px; max-width: var(--g-results-width); }
 
@@ -905,6 +909,22 @@ footer a:hover { color: var(--g-text-secondary); }
   #main_results #sidebar { padding-top: 0; position: static; max-height: none; overflow: visible; }
   #urls, #main_results #answers, #main_results #corrections { max-width: none; }
   #main_results #answers { margin-left: 0; margin-right: 0; }
+  /* --- collapse "center alignment" on tablet/phone -----------------------
+     simple's centered layout (display:flex column + a fixed --center-page-width
+     + a 2-track #results grid + large #results margins) has no room below 980px
+     and crushed the answer card / knowledge panel into a sliver with dead space
+     to its right. The base grid override above only sets `grid-template`, but
+     simple's `.center-alignment-yes …#results:not(images)` longhand
+     `grid-template-columns` (2 ids, 2 classes) outranks it and kept TWO tracks.
+     Re-flatten everything to the same single full-width column as the default;
+     these selectors match simple's specificity and come later, so they win. */
+  .center-alignment-yes #main_results { display: block; align-items: stretch; }
+  .center-alignment-yes #main_results #search { display: block; width: auto; }
+  .center-alignment-yes #main_results #results:not(.only_template_images, .image-detail-open) {
+    grid-template-columns: minmax(0, 1fr); margin: 18px auto 0; max-width: 720px;
+  }
+  .center-alignment-yes #main_results #urls,
+  .center-alignment-yes #main_results #sidebar { margin-left: 0; margin-right: 0; }
   /* preferences: single column (the desktop control uses absolute + 320px
      reserved padding — reset both so rows stack and text never squishes) */
   #main_preferences fieldset { padding-right: 0; }
@@ -913,7 +933,8 @@ footer a:hover { color: var(--g-text-secondary); }
   #main_results #categories { overflow-x: auto; scrollbar-width: none; }
   #main_results #categories::-webkit-scrollbar { display: none; }
   #main_results #categories_container { justify-content: flex-start; flex-wrap: nowrap; width: max-content; }
-  #main_results .search_filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  #main_results .search_filters,
+  .center-alignment-yes #main_results .search_filters { flex-wrap: nowrap; overflow-x: auto; width: auto; margin-left: 0; padding-bottom: 4px; scrollbar-width: none; }
   #main_results .search_filters::-webkit-scrollbar { display: none; }
   #main_results .search_filters select { flex: 0 0 auto; }
 }
@@ -923,6 +944,21 @@ footer a:hover { color: var(--g-text-secondary); }
   #main_index .index-buttons { width: 100%; max-width: 320px; }
   .g-btn { width: 100%; }
   #links_on_top { gap: 14px; padding: 12px 14px; }
+  /* phone results header — Google-mobile layout: wordmark centered on its own
+     row, full-width search pill beneath it, tabs (scrollable) below. The centered
+     selector is listed too because simple's centered #search_header rule (2 ids,
+     1 class) would otherwise outrank the plain one. */
+  #main_results #search_header,
+  .center-alignment-yes #main_results #search_header {
+    grid-template-columns: 1fr; grid-template-areas: "logo" "search" "categories";
+    column-gap: 0; row-gap: 12px; padding: 14px 16px 0;
+  }
+  #main_results #search_logo { justify-self: center; align-self: center; }
+  #main_results #search_logo .wordmark { font-size: 24px; top: 0; }
+  #main_results #search_view { max-width: none; width: 100%; justify-self: stretch; }
+  /* top-right nav: icon-only (like Google's bell/avatar) so it clears the centered
+     wordmark; labels stay in the DOM for screen readers (visually-hidden). */
+  #links_on_top a span { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
   /* image grid: 2 equal columns on phones. minmax(0,1fr) (not bare 1fr) so the
      tracks ignore item min-content and stay equal — bare 1fr made them uneven. */
   #main_results div#results.only_template_images #urls { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }

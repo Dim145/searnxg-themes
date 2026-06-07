@@ -24,6 +24,7 @@ themes/google/
 │   ├── sxng-ltr.min.css   (= base simple + src/google.css)   ← généré par build.sh
 │   ├── sxng-rtl.min.css
 │   ├── sxng-core.min.js   (réutilisé de simple : comportement identique)
+│   ├── google-lightbox.js (maison : clic-fond ferme le visualiseur + spinner hi-res)
 │   └── img/ …             (favicons, icônes, etc. de simple)
 ├── src/
 │   ├── google.css   ← LA source à éditer (tokens Google + pont --color-* + structure)

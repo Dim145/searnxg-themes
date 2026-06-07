@@ -600,6 +600,20 @@ html { overflow-x: clip; }
 #results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-close { top: 20px; right: 24px; left: auto; }
 #results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-previous { top: 50%; left: 24px; right: auto; transform: translateY(-50%); }
 #results.image-detail-open article.result-images[data-vim-selected] .detail a.result-detail-next { top: 50%; right: 24px; left: auto; transform: translateY(-50%); }
+/* full-resolution loading spinner (Material-style ring). Toggled by
+   google-lightbox.js via `.detail.is-loading` only while the hi-res image is
+   actually streaming in — the cached thumbnail shows underneath, so this just
+   signals the upgrade and never hides the picture. pointer-events:none keeps
+   backdrop-to-close working through it. */
+#results.image-detail-open article.result-images[data-vim-selected] .detail.is-loading::after {
+  content: ""; position: fixed; top: 50%; left: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px;
+  border: 3px solid rgb(255 255 255 / 18%); border-top-color: rgb(255 255 255 / 95%); border-radius: 50%;
+  z-index: 3050; pointer-events: none; animation: g-img-spin .8s linear infinite;
+}
+@keyframes g-img-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  #results.image-detail-open article.result-images[data-vim-selected] .detail.is-loading::after { animation-duration: 2s; }
+}
 
 /* ---- back-to-top: fixed bottom-right FAB (simple positions it mid-layout) ---- */
 #backToTop {

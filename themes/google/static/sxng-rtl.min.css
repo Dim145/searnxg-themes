@@ -364,6 +364,10 @@ html { overflow-x: clip; }
   background: var(--g-bg-elevated); border: 1px solid var(--g-border); border-radius: 18px;
   box-shadow: var(--g-shadow-search); max-height: 26rem; overflow-y: auto; padding: 8px 0;
 }
+/* never render the suggestions box when there's nothing to show (an empty/closed
+   one otherwise leaves a faint bordered pill under the home search box) */
+.search_box .autocomplete:not(.open),
+.search_box .autocomplete.open:not(:has(li)) { display: none !important; }
 .search_box .autocomplete ul { list-style: none; margin: 0; padding: 0; }
 .search_box .autocomplete ul li {
   display: flex; align-items: center; gap: 14px; padding: 9px 20px; margin: 0;

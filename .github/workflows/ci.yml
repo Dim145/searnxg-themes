@@ -50,7 +50,10 @@ jobs:
           # the google wordmark markup must be present (theme actually applied)
           curl -s "http://localhost:8888/?theme=google" | grep -q 'class="wordmark"' \
             || { echo "::error::google theme markup missing"; fail=1; }
-          if docker logs sx 2>&1 | grep -iE "TemplateError|TemplateNotFound|jinja2\.exceptions|Traceback"; then
+          # only fail on real TEMPLATE errors — engine/network tracebacks (radio_browser,
+          # timeouts, …) are expected in CI and unrelated to the theme. A broken template
+          # would also 500 above, so this is a belt-and-suspenders check.
+          if docker logs sx 2>&1 | grep -iE "TemplateError|TemplateNotFound|TemplateSyntaxError|UndefinedError|jinja2\.exceptions\."; then
             echo "::error::template error in SearXNG logs"; fail=1
           fi
           docker rm -f sx >/dev/null 2>&1 || true

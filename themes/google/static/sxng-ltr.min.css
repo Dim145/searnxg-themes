@@ -891,8 +891,18 @@ footer a:hover { color: var(--g-text-secondary); }
   }
   #main_results #sidebar { padding-top: 0; position: static; max-height: none; overflow: visible; }
   #urls, #main_results #answers, #main_results #corrections { max-width: none; }
-  #main_preferences fieldset { grid-template-columns: 1fr; grid-template-areas: "legend" "control" "desc"; }
-  #main_preferences fieldset > .value { justify-self: start; }
+  #main_results #answers { margin-left: 0; margin-right: 0; }
+  /* preferences: single column (the desktop control uses absolute + 320px
+     reserved padding — reset both so rows stack and text never squishes) */
+  #main_preferences fieldset { padding-right: 0; }
+  #main_preferences fieldset > .value { position: static; transform: none; margin-top: 8px; text-align: left; justify-self: start; }
+  /* category tabs + filters: horizontal scroll instead of wrapping (tablet & phone) */
+  #main_results #categories { overflow-x: auto; scrollbar-width: none; }
+  #main_results #categories::-webkit-scrollbar { display: none; }
+  #main_results #categories_container { justify-content: flex-start; flex-wrap: nowrap; width: max-content; }
+  #main_results .search_filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  #main_results .search_filters::-webkit-scrollbar { display: none; }
+  #main_results .search_filters select { flex: 0 0 auto; }
 }
 @media (max-width: 560px) {
   #main_index { padding-top: 16vh; }
@@ -900,5 +910,7 @@ footer a:hover { color: var(--g-text-secondary); }
   #main_index .index-buttons { width: 100%; max-width: 320px; }
   .g-btn { width: 100%; }
   #links_on_top { gap: 14px; padding: 12px 14px; }
-  #main_results #categories_container { justify-content: flex-start; }
+  /* image grid: 2 equal columns on phones. minmax(0,1fr) (not bare 1fr) so the
+     tracks ignore item min-content and stay equal — bare 1fr made them uneven. */
+  #main_results div#results.only_template_images #urls { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
 }
